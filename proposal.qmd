@@ -10,6 +10,7 @@ editor: visual
 #| message: false
 
 library(tidyverse)
+eurovision <- read.csv("data/eurovision.csv")
 ```
 
 # Dataset
