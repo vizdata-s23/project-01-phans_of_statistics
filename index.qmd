@@ -7,3 +7,10 @@ editor: visual
 ---
 
 Add project abstract here.
+
+```{r}
+library(readr)
+#importing the dataset
+eurovision <- read_csv("data/eurovision.csv")
+View(eurovision)
+```
