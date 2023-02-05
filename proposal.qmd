@@ -35,3 +35,5 @@ Our first question asks if contestants from the host country tend to perform bet
 # Analysis Plan
 
 A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+
+# References
