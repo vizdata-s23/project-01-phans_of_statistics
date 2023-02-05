@@ -15,13 +15,9 @@ eurovision <- read.csv("data/eurovision.csv")
 
 # Dataset
 
-A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.
+Eurovision is an international public song performance competition between European countries. Each country submits a song that is to be performed live to a centralized committee that plays the song over a common broadcast, and each country then votes on the other countries\' songs. As of 2022, at least 52 countries have participated at least once. The competition has cemented itself as a periodic staple for each country to present a culturally significant piece on an international stage.
 
-Make sure to load the data and use inline code for some of this information.
-
-# Questions
-
-The two questions you want to answer.
+The dataset consists of every song and contestant performed in Eurovision history, along with all the associated data - year, host city and country, points received, final rank, etc. It contains 2,005 observations and 18 variables. The accompanying eurovision-votes.csv maintains a tally of which countries voted for which other countries in each year of the contest.
 
 # Analysis plan
 
