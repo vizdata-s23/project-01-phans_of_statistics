@@ -8,6 +8,7 @@ editor: visual
 ```{r}
 #| label: load-pkgs
 #| message: false
+#| warning: false
 
 library(tidyverse)
 eurovision <- read.csv("data/eurovision.csv")
@@ -15,10 +16,20 @@ eurovision <- read.csv("data/eurovision.csv")
 
 # Dataset
 
-Eurovision is an international public song performance competition between European countries. Each country submits a song that is to be performed live to a centralized committee that plays the song over a common broadcast, and each country then votes on the other countries\' songs. As of 2022, at least 52 countries have participated at least once. The competition has cemented itself as a periodic staple for each country to present a culturally significant piece on an international stage.
+Eurovision is an international public song performance competition between European countries. Each country submits a song that is to be performed live to a centralized committee that plays the song over a common broadcast, and each country then votes on the other countries' songs. As of 2022, at least 52 countries have participated at least once. The competition has cemented itself as a periodic staple for each country to present a culturally significant piece on an international stage.
 
 The dataset consists of every song and contestant performed in Eurovision history, along with all the associated data - year, host city and country, points received, final rank, etc. It contains 2,005 observations and 18 variables. The accompanying eurovision-votes.csv maintains a tally of which countries voted for which other countries in each year of the contest.
 
-# Analysis plan
+We chose this dataset because it contains a substantial mix of both numerical and categorical variables with little missing data, giving us significant freedom to create different visualizations. We also liked that the data was arranged by year, dating back to the first Eurovision in 1956, which will allow us to visualize relationships over time. Finally, since America does not participate in Eurovision and consequently gives the competition minimal publicity, we are excited to educate our audience on a largely unfamiliar topic.
+
+# Questions
+
+The two questions we want to answer are:
+
+1.  Is there a home country advantage in Eurovision?
+
+2.  Does the order in which contestants perform affect their success?
+
+# Analysis Plan
 
 A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
