@@ -30,6 +30,8 @@ The two questions we want to answer are:
 
 2.  Does the order in which contestants perform affect their success?
 
+Our first question asks if contestants from the host country tend to perform better than foreign contestants. We will visualize this relationship (or lack thereof) by first creating a binary variable for each observation that indicates whether the contestant was competing in their home country (done by matching the host country and artist country variables and returning "true" if a match, and "false" if not). From there, we can look year-by-year to see whether a contestant from the host country won, or even facet by decade to look at whether home country advantage was more prevalent in certain eras than others. Furthermore, we can use total points or final rank for each contestant as a measure of success and compare the distributions of these metrics between host country participants and non-host country participants.
+
 # Analysis Plan
 
 A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
