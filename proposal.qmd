@@ -39,7 +39,7 @@ Our first question asks if contestants from the host country tend to perform bet
 
 Our second question looks at whether the order in which contestants perform has a relationship with their success in Eurovision. To do so, we plan on using the variables running order to represent the order in which they perform, year for a temporal visualization, and either total points or rank to represent how they perform in the competition. In addition, since there may be too many ranks to visualize concisely, we can bucket the ranks into broader categories, such as first 10, middle 10, and final 10. One plot can visualize the relationship between running order and total points over time using a scatter plot faceted by decade or year, while another plot can visualize the distribution of the running order of winners over each decade, using the binary winner variable to filter out the data and grouping the years by decade to prevent the plot from being too crowded. The second plot would be a histogram faceted by decade.
 
-We do not plan on merging any external data for either question.
+We have not considered merging any external data for either question, but this is subject to change as we further our analysis.
 
 # References
 
