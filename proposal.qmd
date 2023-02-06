@@ -3,6 +3,9 @@ title: "Proposal for Eurovision Data Visualization Report"
 subtitle: "Federico Arboleda, Ryan Hu, Chandler Naylon, Aryan Poonacha"
 format: html
 editor: visual
+execute:
+  echo: false
+  warning: false
 ---
 
 ```{r}
