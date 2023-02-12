@@ -12,5 +12,4 @@ Add project abstract here.
 library(readr)
 #importing the dataset
 eurovision <- read_csv("data/eurovision.csv")
-View(eurovision)
 ```
