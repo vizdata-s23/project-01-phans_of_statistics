@@ -1,3 +1,3 @@
-# _extra
+# project-01
 
-Think of this folder as a place to hold your "scratch papers", notes, experimentation, etc. Antyhing that doesn't go in your project but you want to keep around for future reference. Contents of this folder will not be reviewed or graded.
+Project 1 repo for STA/ISS 313 - Spring 2023.
