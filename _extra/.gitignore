@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .Rproj.user
 .Rhistory
 .RData
@@ -5,3 +6,6 @@
 
 /.quarto/
 _site
+=======
+/.quarto/
+>>>>>>> b0f8125bedeabb9541731df26378c057fe243cc8
