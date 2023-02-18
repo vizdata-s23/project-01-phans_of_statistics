@@ -3,7 +3,7 @@
     "path": "~/project01/index.qmd",
     "project_path": "index.qmd",
     "type": "quarto_markdown",
-    "hash": "0",
+    "hash": "4045652448",
     "contents": "",
     "dirty": false,
     "created": 1676748810892.0,
@@ -16,16 +16,16 @@
         "Source": "Source",
         "docOutlineVisible": "0",
         "rmdVisualCollapsedChunks": "",
-        "rmdVisualModeLocation": "768:92",
+        "rmdVisualModeLocation": "1712:390",
         "cursorPosition": "14,0",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1676750747,
+    "lastKnownWriteTime": 1676752582,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1676750747351,
+    "last_content_update": 1676752582489,
     "read_only": false,
     "read_only_alternatives": []
 }
