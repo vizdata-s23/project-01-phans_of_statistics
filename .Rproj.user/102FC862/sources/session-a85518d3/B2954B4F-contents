@@ -1,0 +1,31 @@
+# Data
+
+### Provenance
+
+[Link to TidyTuesday repository](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-05-17/readme.md)
+
+[Link to original pre-cleaned data](https://data.world/datagraver/eurovision-song-contest-scores-1975-2019)
+
+### Codebook
+
+|variable       |class     | Description                                          |
+|:--------------|:---------| :--------- |
+|event          |character | Event Name, e.g. Helsinki 2007                       |
+|host_city      |character | Host city name, e.g. Helsinki                        |
+|year           |integer   | Event year, e.g. 2007                                |
+|host_country   |character | Host city country, e.g. Finland                      |
+|event_url      |character | Link to event                                        |
+|section        |character | Final, semi-final, first semi final, second-semi-final |
+|artist         |character | Name of performer/participant                        |
+|song           |character | Song title name                                      |
+|artist_url     |character | Link to participant bio                              |
+|image_url      |character | Link to participant image |
+|artist_country |character | Participant country, e.g. Austria                    |
+|country_emoji  |character | Emoji code for Country |
+|running_order  |integer   | Running order for the teams |
+|total_points   |integer   | Points                                               |
+|rank           |integer   | Numeric rank, e.g. 2                                 |
+|rank_ordinal   |character | Ordinal rank, e.g. 2nd                               |
+|qualified      |logical   | Is the team qualified |
+|winner         |logical   | Was this team the grand champion |
+
