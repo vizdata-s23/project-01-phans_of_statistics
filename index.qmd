@@ -39,7 +39,10 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
 ```{r}
-
+#| message: false
+#| warning: false
+#| label: load-packages
+library(tidyverse)
 ```
 
 ### Discussion
@@ -59,6 +62,12 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 ### Analysis
 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: plot-2
+```
 
 ### Discussion
 
