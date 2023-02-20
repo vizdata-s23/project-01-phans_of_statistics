@@ -6,6 +6,15 @@ format: html
 editor: visual
 ---
 
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+```
+
 ## Abstract
 
 (1 paragraph): Project abstract.
@@ -24,7 +33,9 @@ The dataset, contained within eurovision.csv, consists of every song performed i
 
 (1-2 paragraphs): Introduction to the question and what parts of the dataset are necessary to answer the question. Also discuss why you're interested in this question.
 
-Our first question asks if contestants from the `host_country` in each competition tend to perform better than foreign contestants. We were interested in this question because hosting a competition at home is often seen as an advantage, especially in sports such as basketball and soccer where having a supportive crowd and familiar environment is beneficial. Consequently, we wanted to see if there was a similar pattern for singing competitions like Eurovision, and if there was, to what extent it correlates with performance.
+Our first question asks if contestants from the `host_country` in each competition tend to perform better than foreign contestants. We were interested in this question because hosting a competition at home is often seen as advantageous, especially in sports such as basketball and soccer where having a supportive crowd boosts team energy (and on the flip side unnerves opponents) and playing in a familiar environment helps players feel comfortable (plus not having to travel).
+
+and playing in a familiar environment is beneficial. Consequently, we wanted to see if there was a similar pattern for singing competitions like Eurovision, and if there was, to what extent it correlates with performance.
 
 To conduct our analysis, we mainly used the variables `total_points`, `rank`, and `year`. We also created a new binary variable called `from_host_country` for each observation that indicates whether the contestant was competing in their home country (done by matching the `host_country` and `artist_country` variables and returning "true" if a match, and "false" if not).
 
@@ -38,11 +49,19 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
-```{r}
-#| message: false
-#| warning: false
-#| label: load-packages
-library(tidyverse)
+```{r q1 data wrangling}
+#| include: false
+
+```
+
+```{r q1 first plot}
+#| echo: false
+
+```
+
+```{r q1 second plot}
+#| echo: false
+
 ```
 
 ### Discussion
@@ -63,10 +82,19 @@ library(tidyverse)
 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
-```{r}
-#| message: false
-#| warning: false
-#| label: plot-2
+```{r q2 data wrangling}
+#| include: false
+
+```
+
+```{r q2 first plot}
+#| echo: false
+
+```
+
+```{r q2 second plot}
+#| echo: false
+
 ```
 
 ### Discussion
