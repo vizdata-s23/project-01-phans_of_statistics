@@ -103,7 +103,34 @@ euro_by_decade %>%
 ```
 
 ```{r q1 second plot}
+<<<<<<< HEAD
+=======
+#| echo: false
+# Plot distribution of total points by from_host_country
+plot2data <- eurovision
+plot2data$from_host_country <- ifelse(plot2data$host_country == plot2data$artist_country, "Yes", "No")
+>>>>>>> 5d64fd733898b053bb0ffd20f4b8cb154f5dd85e
 
+ggplot(plot2data, aes(x = total_points, fill = from_host_country)) + 
+  geom_histogram(binwidth = 10, alpha = 0.5, position = "identity") +
+  labs(title = "Distribution of Total Points by from_host_country", x = "Total Points", y = "Count") +
+  facet_wrap(~ from_host_country)
+
+# Plot distribution of rank by from_host_country
+ggplot(plot2data, aes(x = rank, fill = from_host_country)) + 
+  geom_histogram(binwidth = 5, alpha = 0.5, position = "identity") +
+  labs(title = "Distribution of Rank by from_host_country", x = "Rank", y = "Count") +
+  facet_wrap(~ from_host_country)
+
+#violin plot
+ggplot(plot2data, aes(x = from_host_country, y = total_points, fill = from_host_country)) +
+  geom_violin(trim = FALSE, scale = "count", alpha = 0.7) +
+  geom_boxplot(width = 0.2, fill = "white", outlier.shape = NA) +
+  labs(title = "Distribution of Total Points by from_host_country", x = "from_host_country", y = "Total Points") +
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country") +
+  theme_minimal() +
+  theme(legend.position = "top", axis.title.y = element_text(margin = margin(r = 10))) +
+  coord_flip()
 ```
 
 ### Discussion
