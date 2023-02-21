@@ -1,0 +1,8 @@
+"0","euro_decades2 <- euro_decades |>"
+"0","  group_by(decade, running_order) |>"
+"0","  mutate(mean_points = mean(total_points))"
+"0","  "
+"0","ggplot(euro_decades2, aes(x = running_order, y = mean_points, color = decade)) +"
+"0","  geom_point() +"
+"0","  geom_line() +"
+"0","  geom_smooth(method = ""lm"")"
