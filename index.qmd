@@ -50,6 +50,14 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 ```{r q1 data wrangling}
 #| echo: false
 
+eurovision %>%
+  count(year) %>%
+  ggplot(aes(x = year, y = n)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Year",
+       y = "Number of participating countries", color = "Decade", 
+       title = "More countries have joined Eurovision over time")
+
 # grouped by decade
 euro_by_decade <- eurovision |>
   filter(year != "2020") |>
@@ -73,7 +81,6 @@ eurovision_eras <- eurovision |>
                             year %in% 2011:2022 ~ "2011-2022")) |>
   mutate(from_host_country = case_when(host_country == artist_country ~ "yes",
                                        host_country != artist_country ~ "no"))
-
 
 eurovision_eras |>
   count(era, sort = TRUE)
