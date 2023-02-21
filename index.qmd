@@ -13,6 +13,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(dplyr)
 library(ggplot2)
 library(tidyverse)
+library(ggridges)
 eurovision <- read.csv("data/eurovision.csv")
 ```
 
@@ -47,13 +48,49 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
 ```{r q1 data wrangling}
-#| include: false
+#| echo: false
 
+# grouped by decade
+euro_by_decade <- eurovision |>
+  filter(year != "2020") |>
+  mutate(decade = case_when(year %in% 1950:1959 ~ "1950s",
+                            year %in% 1960:1969 ~ "1960s",
+                            year %in% 1970:1979 ~ "1970s",
+                            year %in% 1980:1989 ~ "1980s",
+                            year %in% 1990:1999 ~ "1990s",
+                            year %in% 2000:2009 ~ "2000s",
+                            year %in% 2010:2019 ~ "2010s",
+                            year %in% 2020:2022 ~ "2020s")) |>
+  mutate(from_host_country = case_when(host_country == artist_country ~ "yes",
+                                       host_country != artist_country ~ "no"))
+
+# grouped by more arbitrary eras (pre 80s, 80s-90s, 2000s, 2010s-present)
+eurovision_eras <- eurovision |>
+  filter(year != "2020") |>
+  mutate(era = case_when(year %in% 1956:1979 ~ "1956-1979",
+                            year %in% 1980:1999 ~ "1980-1999",
+                            year %in% 2000:2010 ~ "2000-2010",
+                            year %in% 2011:2022 ~ "2011-2022")) |>
+  mutate(from_host_country = case_when(host_country == artist_country ~ "yes",
+                                       host_country != artist_country ~ "no"))
+
+
+eurovision_eras |>
+  count(era, sort = TRUE)
+
+eurovision_eras |>
+  count(from_host_country, rank, sort = TRUE)
 ```
 
 ```{r q1 first plot}
 #| echo: false
+#ggplot(eurovision_eras, aes(x = total_points, y = from_host_country)) +
+#  geom_density_ridges()
 
+euro_by_decade %>%
+  filter(from_host_country == "yes") %>%
+  ggplot(aes(x = rank, y = decade)) +
+  geom_density_ridges()
 ```
 
 ```{r q1 second plot}
