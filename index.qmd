@@ -103,8 +103,7 @@ euro_by_decade %>%
 ```
 
 ```{r q1 second plot}
-<<<<<<< HEAD
-=======
+
 #| echo: false
 # Plot distribution of total points by from_host_country
 plot2data <- eurovision
