@@ -108,7 +108,6 @@ euro_by_decade %>%
 # Plot distribution of total points by from_host_country
 plot2data <- eurovision
 plot2data$from_host_country <- ifelse(plot2data$host_country == plot2data$artist_country, "Yes", "No")
->>>>>>> 5d64fd733898b053bb0ffd20f4b8cb154f5dd85e
 
 ggplot(plot2data, aes(x = total_points, fill = from_host_country)) + 
   geom_histogram(binwidth = 10, alpha = 0.5, position = "identity") +
