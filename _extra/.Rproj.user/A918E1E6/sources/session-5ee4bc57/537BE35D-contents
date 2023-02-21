@@ -160,7 +160,7 @@ ggplot(euro_places, aes(x = year, y = running_order)) +
   geom_line() +
   facet_wrap(~ top3, ncol = 1) +
   labs(title = "Running Order of Top Three Finishers In Eurovision Over Time",
-       x = "Year", y = "Running Order", color = "Finishing Place") +
+       x = "Year", y = "Running Order", color = "Placement") +
   geom_smooth(method = "lm", aes(color = top3)) +
   scale_color_manual(values = c("#DAA520", "#808080", "#967444")) +
   theme_minimal()
