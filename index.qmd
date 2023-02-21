@@ -97,7 +97,10 @@ eurovision_eras |>
 euro_by_decade %>%
   filter(from_host_country == "yes") %>%
   ggplot(aes(x = rank, y = decade)) +
-  geom_density_ridges()
+  geom_density_ridges() +
+  labs(x = "Rank",
+       y = "Decade", 
+       title = "Distribution of home country participants' ranks by decade")
 ```
 
 ```{r q1 second plot}
