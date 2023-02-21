@@ -13,6 +13,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(dplyr)
 library(ggplot2)
 library(tidyverse)
+eurovision <- read.csv("data/eurovision.csv")
 ```
 
 ## Abstract
@@ -31,11 +32,7 @@ The dataset, contained within eurovision.csv, consists of every song performed i
 
 ### Introduction
 
-(1-2 paragraphs): Introduction to the question and what parts of the dataset are necessary to answer the question. Also discuss why you're interested in this question.
-
-Our first question asks if contestants from the `host_country` in each competition tend to perform better than foreign contestants. We were interested in this question because hosting a competition at home is often seen as advantageous, especially in sports such as basketball and soccer where having a supportive crowd boosts team energy (and on the flip side unnerves opponents) and playing in a familiar environment helps players feel comfortable (plus not having to travel).
-
-and playing in a familiar environment is beneficial. Consequently, we wanted to see if there was a similar pattern for singing competitions like Eurovision, and if there was, to what extent it correlates with performance.
+Our first question asks if contestants from the `host_country` in each competition tend to perform better than foreign contestants. We were interested in this question because hosting a competition at home is often seen as advantageous, especially in sports such as basketball and soccer where having a supportive crowd boosts team energy (and on the flip side unnerves opponents) and playing in a familiar environment helps players feel comfortable (plus not having to travel). Consequently, we wanted to see if there was a similar pattern for singing competitions like Eurovision, and if there was, to what extent it correlates with performance.
 
 To conduct our analysis, we mainly used the variables `total_points`, `rank`, and `year`. We also created a new binary variable called `from_host_country` for each observation that indicates whether the contestant was competing in their home country (done by matching the `host_country` and `artist_country` variables and returning "true" if a match, and "false" if not).
 
@@ -85,11 +82,38 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 ```{r q2 data wrangling}
 #| include: false
 
+eurovision_text <- eurovision |>
+  arrange(desc(total_points)) |>
+  slice(1:3)
+
+euro_decades <- eurovision |>
+  mutate(decade = case_when(year %in% 1950:1959 ~ "1950s", 
+                            year %in% 1960:1969 ~ "1960s",
+                            year %in% 1970:1979 ~ "1970s",
+                            year %in% 1980:1989 ~ "1980s",
+                            year %in% 1990:1999 ~ "1990s",
+                            year %in% 2000:2009 ~ "2000s",
+                            year %in% 2010:2019 ~ "2010s",
+                            year %in% 2020:2022 ~ "2020s"))
 ```
 
 ```{r q2 first plot}
 #| echo: false
 
+ggplot(euro_decades, aes(x = running_order, y = total_points)) +
+  geom_point(aes(color = decade)) +
+  geom_text(data = eurovision_text, 
+            aes(label = artist), 
+            nudge_x = -2.8, 
+            size = 6) +
+  theme_grey() +
+  theme(panel.border = element_blank(),
+        axis.title = element_text(size = 15), 
+        plot.title = element_text(size = 20), 
+        plot.subtitle = element_text(size = 18)) +
+  labs(x = "Running order", y = "Total points", color = "Decade", 
+       title = "Total points earned by Eurovision contestants by running order", 
+       subtitle = "By decade of competition")
 ```
 
 ```{r q2 second plot}
