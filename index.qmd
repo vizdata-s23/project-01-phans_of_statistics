@@ -40,7 +40,7 @@ To conduct our analysis, we used the variables `total_points`, `rank`, and `year
 
 ### Approach
 
-(1-2 paragraphs): Describe what types of plots you are going to make to address your question. For each plot, provide a clear explanation as to why this plot (e.g. boxplot, barplot, histogram, etc.) is best for providing the information you are asking about. The two plots should be of different types, and at least one of the two plots needs to use either color mapping or facets.
+(1-2 paragraphs): Describe what types of plots you are going to make to address your question. For each plot, provide a clear explanation as to why this plot (e.g. boxplot, barplot, histogram, etc.) is best for providing the information you are asking about. The two plots should be of different types, and at least one of the two plots needs to use either color mapping or facets.
 
 We used our first plot as a histogram of `total_points` or final `rank` of host country participants faceted by decade to look at whether home country advantage was more prevalent in certain eras than others. A ridge plot could also be used here, which we will decide upon visualization when we can compare to values of both. Furthermore, we can use `total_points` or `rank` for each contestant as a measure of success and compare the distributions of these metrics between host country participants and non-host country participants in our second plot through a histogram faceted by whether `from_host_country`. A violin plot can also be used here for the second plot to make comparisons better, but we will again decide which to use upon visualization.
 
@@ -143,7 +143,7 @@ ggplot(plot2data, aes(x = from_host_country, y = total_points, fill = from_host_
 
 ### Approach
 
-(1-2 paragraphs): Describe what types of plots you are going to make to address your question. For each plot, provide a clear explanation as to why this plot (e.g. boxplot, barplot, histogram, etc.) is best for providing the information you are asking about. The two plots should be of different types, and at least one of the two plots needs to use either color mapping or facets.
+(1-2 paragraphs): Describe what types of plots you are going to make to address your question. For each plot, provide a clear explanation as to why this plot (e.g.boxplot, barplot, histogram, etc.) is best for providing the information you are asking about. The two plots should be of different types, and at least one of the two plots needs to use either color mapping or facets.
 
 ### Analysis
 
