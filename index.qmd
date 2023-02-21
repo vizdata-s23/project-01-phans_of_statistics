@@ -87,21 +87,30 @@ eurovision_text <- eurovision |>
   slice(1:3)
 
 euro_decades <- eurovision |>
-  mutate(decade = case_when(year %in% 1950:1959 ~ "1950s", 
-                            year %in% 1960:1969 ~ "1960s",
-                            year %in% 1970:1979 ~ "1970s",
-                            year %in% 1980:1989 ~ "1980s",
-                            year %in% 1990:1999 ~ "1990s",
-                            year %in% 2000:2009 ~ "2000s",
-                            year %in% 2010:2019 ~ "2010s",
-                            year %in% 2020:2022 ~ "2020s"))
+  mutate(decade = case_when(year %in% 1950:1967 ~ "1950-67",
+                            year %in% 1968:1986 ~ "1968-85",
+                            year %in% 1987:2005 ~ "1986-2003",
+                            year %in% 2005:2022 ~ "2004-22")) |>
+  drop_na(total_points)
+
+# euro_decades <- eurovision |>
+#   mutate(decade = case_when(year %in% 1950:1959 ~ "1950s", 
+#                             year %in% 1960:1969 ~ "1960s",
+#                             year %in% 1970:1979 ~ "1970s",
+#                             year %in% 1980:1989 ~ "1980s",
+#                             year %in% 1990:1999 ~ "1990s",
+#                             year %in% 2000:2009 ~ "2000s",
+#                             year %in% 2010:2019 ~ "2010s",
+#                             year %in% 2020:2022 ~ "2020s")) |>
+#   drop_na(total_points)
 ```
 
 ```{r q2 first plot}
 #| echo: false
+set.seed(123)
 
 ggplot(euro_decades, aes(x = running_order, y = total_points)) +
-  geom_point(aes(color = decade)) +
+  geom_jitter(aes(color = decade), alpha = 0.5) +
   geom_text(data = eurovision_text, 
             aes(label = artist), 
             nudge_x = -2.8, 
@@ -120,6 +129,7 @@ ggplot(euro_decades, aes(x = running_order, y = total_points)) +
 ```{r q2 second plot data-wrangling}
 #| echo: false
 euro_places <- eurovision |>
+  drop_na(total_points, running_order) |>
   group_by(event) |>
   arrange(desc(total_points), .by_group=TRUE) |>
   mutate(group_row_num = row_number(event)) |>
@@ -137,14 +147,21 @@ ggplot(euro_places, aes(x = year, y = running_order)) +
   geom_line() +
   facet_wrap(~ top3, ncol = 1) +
   labs(title = "Running Order of Top Three Finishers In Eurovision Over Time",
-       x = "Year", y = "Running Order") +
-  geom_smooth(method = "lm") +
+       x = "Year", y = "Running Order", color = "Finishing Place") +
+  geom_smooth(method = "lm", aes(color = top3)) +
+  scale_color_manual(values = c("#AF9500", "#808080", "#967444")) +
   theme_minimal()
 ```
 
 ### Discussion
 
 (1-3 paragraphs): In the Discussion section, interpret the results of your analysis. Identify any trends revealed (or not revealed) by the plots. Speculate about why the data looks the way it does.
+
+From our first graph, we see that there does not appear to be a strong relationship between the order in which contestants perform and how many points they receive. For each decade, the trend-line is almost horizontal, especially in the earlier decades. While the later decades (especially the 2020s) appear to have a slightly positive relationship between running order and total points earned, the confidence interval is also very wide, suggesting that the relationship may not be as strong as the trend-line suggests.The trend-lines also gradually shift upwards vertically, which makes sense as Eurovision has expanded over the decades, including more participants and more countries with more points available to be earned.
+
+From our second graph, we see consistent results with the first one. For first, second, and third place finishers, we see an almost identical trend-line: a slight positive relationship year and running order, suggesting that the top three finishers in Eurovision generally performed slightly later in the order than their predecessors from the previous years. Also, there is not a significant difference between the running order of first, second, and third place finishers. However, overall, the lines are so volatile that it suggests that running order is not a very strong factor in performance.
+
+Combining the results from the graph, we conclude that performing later in the running order is slightly better performance, which could be explained by the fact that people may remember the songs performed towards the end more as they are the most recent in their memory when they vote. The trend that this has more of an impact in recent years could be explained by the fact that Eurovision has expanded over the years, meaning more performers, which would make it harder to remember the earlier performers during voting. Finally, the fact that the running orders of the top three finishers are not too different from each other despite the above results could be explained by the fact that running order matters more for distinguishing the above average from the rest but less for the best of the best.
 
 ## References
 
