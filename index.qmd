@@ -120,10 +120,23 @@ ggplot(euro_decades, aes(x = running_order, y = total_points)) +
         axis.title = element_text(size = 15), 
         plot.title = element_text(size = 20), 
         plot.subtitle = element_text(size = 18)) +
+  geom_smooth(method = lm, size = 2.5, color = "black", se = FALSE, 
+              aes(group = decade)) +
   geom_smooth(method = "lm", aes(color = decade)) + 
   labs(x = "Running order", y = "Total points", color = "Decade", 
        title = "Total points earned by Eurovision contestants by running order", 
-       subtitle = "By decade of competition")
+       subtitle = "By decade of competition") +
+  theme_minimal()
+```
+
+```{r alternative-q2-first-plot}
+euro_decades2 <- euro_decades |>
+  group_by(decade, running_order) |>
+  mutate(mean_points = mean(total_points))
+  
+ggplot(euro_decades2, aes(x = running_order, y = mean_points, color = decade)) +
+  geom_point() +
+  geom_smooth(method = "lm")
 ```
 
 ```{r q2 second plot data-wrangling}
@@ -149,7 +162,7 @@ ggplot(euro_places, aes(x = year, y = running_order)) +
   labs(title = "Running Order of Top Three Finishers In Eurovision Over Time",
        x = "Year", y = "Running Order", color = "Finishing Place") +
   geom_smooth(method = "lm", aes(color = top3)) +
-  scale_color_manual(values = c("#AF9500", "#808080", "#967444")) +
+  scale_color_manual(values = c("#DAA520", "#808080", "#967444")) +
   theme_minimal()
 ```
 
