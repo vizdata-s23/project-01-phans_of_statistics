@@ -116,9 +116,28 @@ ggplot(euro_decades, aes(x = running_order, y = total_points)) +
        subtitle = "By decade of competition")
 ```
 
-```{r q2 second plot}
+```{r q2 second plot data-wrangling}
 #| echo: false
+euro_places <- eurovision |>
+  group_by(event) |>
+  arrange(desc(total_points), .by_group=TRUE) |>
+  mutate(group_row_num = row_number(event)) |>
+  mutate(top3 = case_when(
+    group_row_num == 1 ~ "First Place",
+    group_row_num == 2 ~ "Second Place",
+    group_row_num == 3 ~ "Third Place",
+    group_row_num > 3 ~ "Other"
+  )) |>
+  slice(1:3)
+```
 
+```{r q2-second-plot}
+ggplot(euro_places, aes(x = year, y = running_order)) +
+  geom_line() +
+  facet_wrap(~ top3, ncol = 1) +
+  labs(title = "Running Order of Top Three Finishers In Eurovision Over Time",
+       x = "Year", y = "Running Order") +
+  theme_minimal()
 ```
 
 ### Discussion

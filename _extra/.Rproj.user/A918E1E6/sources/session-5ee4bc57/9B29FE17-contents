@@ -1,0 +1,288 @@
+---
+title: "HW 02"
+author: "Ryan Hu"
+format:
+  html:
+    embed-resources: true
+toc: true
+---
+
+```{r}
+#| message: false
+#| warning: false
+#| label: load-packages
+library(tidyverse)
+library(dsbox)
+library(ggridges)
+```
+
+
+## 1 - A new day, a new plot, a new geom
+
+```{r}
+#| message: false
+#| warning: false
+#| label: wrangle-data
+edibnb_median <- edibnb |>
+  drop_na() |>
+  group_by(neighbourhood) |>
+  summarize(median_review_scores = median(review_scores_rating)) |>
+  arrange(median_review_scores)
+
+edibnb <- edibnb |>
+  drop_na()
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| label: ridge-plot
+ggplot(edibnb, aes(x = review_scores_rating, y = factor(neighbourhood, 
+                                                                levels = edibnb_median$neighbourhood))) +
+  geom_density_ridges() + 
+  labs(title = "Ridgeplot of Airbnb Review Scores per Neighborhood",
+       x = "Review Score Rating", y = "Neighborhood")
+```
+From the visualization, we see that the distribution is not drastically different across the different neighborhoods. They all are relatively unimodal, slightly left skew, and have a couple outliers in the score of about 80 or so. The distributions are also concentrated around the very high ratings, roughly 90-100, with the modes roughly around the mid to high 90s. It is also interesting to note that visually the distributions imply that some of the ratings are above 100, which may be attributed to the way the visualization is run/displayed.
+
+## 2 - Foreign Connected PACs
+
+```{r}
+#| message: false
+#| warning: false
+#| label: load-data
+library(janitor) 
+library(fs)
+library(scales)
+# get a list of files with "Foreign Connected PAC" in their names
+list_of_files <- dir_ls(path = "data", regexp = "Foreign Connected PAC")
+
+# read all files and row bind them
+# keeping track of the file name in a new column called year
+pac <- read_csv(list_of_files, id = "year")
+
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| label: data-cleaning
+new_pac <- pac |>
+  clean_names()
+
+new_pac <- new_pac |>
+  mutate(year = as.integer(substring(year, 35, 38))) |>
+  separate(
+    country_of_origin_parent_company,
+    into = c("country_of_origin", "parent_company"),
+    sep = "/",
+    convert = TRUE
+  ) |>
+  mutate(dems = as.double(gsub("\\$", "", dems)),
+         repubs = as.double(gsub("\\$", "", repubs)))
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| label: data-cleaning2
+clean_pac <- new_pac |> 
+  pivot_longer(
+    cols = c("dems","repubs"),
+    names_to = "party",
+    values_to = "amount"
+  ) |>
+  mutate(party = if_else(party == "dems", "Democrat","Republican")) |>
+  filter(country_of_origin == "UK") |>
+  group_by(year,party) |>
+  summarize(total = sum(amount))
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| label: visualization
+ggplot(clean_pac, aes(x = year, y = total/1000000, group = party, color = party)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(values = c("blue","red"))+
+  labs(title = "Contributions to US political partifes from UK-connected PACs",
+       x = "Year", y = "Total amount", caption = "Source: OpenSecrets.org",
+       color = "Party") +
+  theme_minimal() +
+  theme(legend.position=c(.9,.15),
+        legend.background = element_rect(fill = "transparent", color = "NA"),
+        axis.title.x = element_text(hjust=0),
+        axis.title.y = element_text(hjust=0))+
+  scale_y_continuous(labels = label_dollar(suffix = "M"))
+  
+```
+**Note, I think the title in the original graph has a typo as the title says partifes when I believe it should say parties. However, as the question says to recreate the graph, I decided to copy the title word for word. 
+
+```{r}
+#| message: false
+#| warning: false
+#| label: another-country-plot
+clean_pac2 <- new_pac |> 
+  pivot_longer(
+    cols = c("dems","repubs"),
+    names_to = "party",
+    values_to = "amount"
+  ) |>
+  mutate(party = if_else(party == "dems", "Democrat","Republican")) |>
+  filter(country_of_origin == "Germany") |>
+  group_by(year,party) |>
+  summarize(total = sum(amount))
+
+ggplot(clean_pac2, aes(x = year, y = total/1000000, group = party, color = party)) +
+  geom_line() +
+  scale_color_manual(values = c("blue","red"))+
+  labs(title = "Contributions to US political parties from German-connected PACs",
+       x = "Year", y = "Total amount", caption = "Source: OpenSecrets.org",
+       color = "Party") +
+  theme_minimal() +
+  theme(legend.position=c(.9,.15),
+        legend.background = element_rect(fill = "transparent", color = "NA"),
+        axis.title.x = element_text(hjust=0),
+        axis.title.y = element_text(hjust=0))+
+  scale_y_continuous(labels = label_dollar(suffix = "M"))
+```
+From the plot, we can see that contributions of France-connected PACs to both Democrats and Republicans has been on an upwards trend from 2000 to roughly 2018. For the Democrats, it's increased from around a third of a million dollars to a million dollars, with a peak at around 1.3 million dollars. For the Republicans, it's increased from roughly 0.8 million dollars to around 1 million dollars, with a peak at around 2 million dollars. Since 2018 however, the total amount for both has been rapidly decreasing. The total amount is also consistently higher for Republican parties besides slightly around 2008 to 2010, and the difference has significantly narrowed if not disappeared since 2020. 
+
+## 3 - Hop on
+
+```{r}
+#| message: false
+#| warning: false
+#| label: load-data2
+library(glue)
+library(lubridate)
+flights <- read_csv("data/rdu-flights-2020.csv")
+planes <- read_csv("data/rdu-planes-2020.csv")
+```
+```{r}
+#| message: false
+#| warning: false
+#| label: join-data
+rdu_flights_planes <- inner_join(flights, planes, by = "tailnum")
+glimpse(rdu_flights_planes)
+```
+There are 32,533 rows and 27 columns.
+Note: I decided to do inner join because the directions state that the flights should exist in both datasets, and it wouldn't make sense to analyze flights without a corresponding plane.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: visualize-size
+quantile(planes$seats, probs = c(0.25,0.5,0.75,1))
+```
+```{r}
+#| message: false
+#| warning: false
+#| label: mutate-size
+rdu_flights_planes2 <- rdu_flights_planes |>
+  mutate(size = case_when(
+    seats <= 100 ~ "Small",
+    seats > 100 & seats <= 149 ~ "Medium",
+    seats > 149 & seats <= 189 ~ "Large",
+    seats > 189 ~ "Jumbo"
+  )) |>
+  group_by(size) |>
+  summarize(number_of_flights = n())
+```
+I decided to group the sizes based on the quartiles of the data for planes. I think it made the most sense to do as it was the simplest method that separated each size into relatively evenly split groups based on the number of seats in each plane rather than each flight.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: plane-plot
+
+ggplot(rdu_flights_planes2, aes(x = number_of_flights, y = fct_relevel(size,"Small","Medium","Large","Jumbo"))) +
+  geom_segment(linewidth = 0.8, color = "deepskyblue", aes(x = 0, xend = number_of_flights,
+               yend = size)) +
+  geom_text(aes(label = "✈️"),size = c(20,17,13,9), show.legend = FALSE,
+            angle = 45) +
+  labs(title = "Number of flights out of RDU in 2020",
+       subtitle = "By size of plane",
+       x = "Number of flights",
+       y = "Plane size",
+       caption = "Source: FAA Aircraft Registry and \n Bureau of Transportation Statistics")+
+  scale_x_continuous( label = comma, limits = c(0,15000))+
+  theme_minimal()
+  
+
+```
+```{r}
+#| message: false
+#| warning: false
+#| label: new-plot
+rdu_flights_planes3 <- rdu_flights_planes |>
+  mutate(size = case_when(
+    seats <= 100 ~ "Small",
+    seats > 100 & seats <= 149 ~ "Medium",
+    seats > 149 & seats <= 189 ~ "Large",
+    seats > 189 ~ "Jumbo"
+  ))
+ggplot(rdu_flights_planes3, aes(distance)) +
+  geom_histogram() +
+  facet_wrap(~ size) +
+  labs(title = "Distributions of Distance Flown by Plane Size",
+       x = "Distance", y = "Count") +
+  theme_minimal()
+```
+From the plot, we see that the distributions of distance are right skewed, although to varying degrees, for each plane size. Plane size of large is the least right skew, while plane size of small is the most right skewed. The distributions are mostly relatively unimodal, although plane size of large appears to be possibly bimodal. Large planes, jumbo planes, and medium planes all have a decent amount of outliers at high distances, while small planes do not really have those outliers. Small planes also appear to have the highest overall volume of flights compared to the others, which are relatively similar to each other in terms of volume.
+
+## 4 - Expect More. Plot More.
+
+```{r}
+#| message: false
+#| warning: false
+#| label: target-logo
+df <- tibble(names = c("1", "2","3"))
+
+ggplot(df, aes(x = factor(2)),fill = names)+
+  geom_bar(width = 1, aes(fill = names), show.legend = FALSE) +
+  coord_polar()+
+  scale_fill_manual(values = c("#cc0000", "white","#cc0000"))+
+  theme_void()+
+  labs(caption = expression(bold(TARGET["\u00ae"]))) +
+  theme(plot.caption = element_text(size=30, hjust = 0.5, color = "#cc0000",
+                                    family = "Helvetica"))
+```
+Sources:
+color: https://www.onlinepalette.com/target/
+Others:
+https://stackoverflow.com/questions/15600456/adjusting-font-lab-to-get-bold-in-plotmath-expression
+https://ggplot2.tidyverse.org/reference/coord_polar.html
+https://stackoverflow.com/questions/28243514/ggplot2-change-title-size
+https://www.staringatr.com/3-the-grammar-of-graphics/themes/7_axislabels/ 
+
+
+## 5 - Mirror, mirror on the wall, who’s the ugliest of them all?
+
+```{r}
+#| message: false
+#| warning: false
+#| label: load-penguins
+library(palmerpenguins)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| label: ugly-plot
+ggplot(penguins, aes(x = sex, y = bill_length_mm, color = species,
+                     shape = island, size = body_mass_g)) +
+  geom_point()+
+  geom_text(label = "source: penguins")+
+  facet_wrap(~year) +
+  theme_classic(base_size =20)+
+  scale_color_manual(values = c("#00FF00","#00FFFF","#FF6700") )+
+  theme(panel.background = element_rect(fill = "#FFFF33",
+                                        color = "#665D1E",
+                                        size = 10),
+        plot.background = element_rect(fill = "darkblue"))+
+  labs(title = "Lots of Penguins")
+```
+
+

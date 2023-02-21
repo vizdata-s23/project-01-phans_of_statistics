@@ -1,0 +1,32 @@
+{
+    "id": "537BE35D",
+    "path": "~/project-01-phans_of_statistics/index.qmd",
+    "project_path": null,
+    "type": "quarto_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1676762322812.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "rmdVisualMode": "true",
+        "rmdVisualWrapConfigured": "true",
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "rmdVisualCollapsedChunks": "",
+        "rmdVisualModeLocation": "7713:3795",
+        "cursorPosition": "133,0",
+        "scrollLine": "0",
+        "last_setup_crc32": "5ee4bc57c9606018"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1676946301,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1676946301025,
+    "read_only": false,
+    "read_only_alternatives": []
+}

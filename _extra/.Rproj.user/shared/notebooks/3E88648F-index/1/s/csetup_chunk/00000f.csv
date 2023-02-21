@@ -1,0 +1,7 @@
+"0","#| include: false"
+"0","knitr::opts_chunk$set(warning = FALSE, message = FALSE)"
+"0",""
+"0","library(dplyr)"
+"0","library(ggplot2)"
+"0","library(tidyverse)"
+"0","eurovision <- read.csv(""data/eurovision.csv"")"
