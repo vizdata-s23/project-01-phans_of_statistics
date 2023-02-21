@@ -111,6 +111,7 @@ ggplot(euro_decades, aes(x = running_order, y = total_points)) +
         axis.title = element_text(size = 15), 
         plot.title = element_text(size = 20), 
         plot.subtitle = element_text(size = 18)) +
+  geom_smooth(method = "lm", aes(color = decade)) + 
   labs(x = "Running order", y = "Total points", color = "Decade", 
        title = "Total points earned by Eurovision contestants by running order", 
        subtitle = "By decade of competition")
@@ -137,6 +138,7 @@ ggplot(euro_places, aes(x = year, y = running_order)) +
   facet_wrap(~ top3, ncol = 1) +
   labs(title = "Running Order of Top Three Finishers In Eurovision Over Time",
        x = "Year", y = "Running Order") +
+  geom_smooth(method = "lm") +
   theme_minimal()
 ```
 

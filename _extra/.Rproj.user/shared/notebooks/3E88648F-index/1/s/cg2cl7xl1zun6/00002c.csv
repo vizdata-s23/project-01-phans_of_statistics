@@ -1,6 +1,0 @@
-"0","ggplot(euro_places, aes(x = year, y = running_order)) +"
-"0","  geom_line() +"
-"0","  facet_wrap(~ top3, ncol = 1) +"
-"0","  labs(title = ""Running Order of Top Three Finishers In Eurovision Over Time"","
-"0","       x = ""Year"", y = ""Running Order"") +"
-"0","  theme_minimal()"

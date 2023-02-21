@@ -1,0 +1,454 @@
+---
+title: "Homework 01"
+author: "Ryan Hu"
+format:
+  html:
+    embed-resources: true
+toc: true
+---
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(openintro)
+library(dsbox)
+```
+
+
+## 1 - Road traffic accidents in Edinburgh
+
+```{r ex_1_traffic_graph}
+#| message: false
+#| warning: false
+accidents <- accidents|>
+  mutate(is_weekend = if_else(day_of_week %in% c("Saturday","Sunday"),
+                             "Weekend", "Weekday"))
+
+ggplot(accidents, aes(time, fill = severity)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~ is_weekend, ncol = 1)+
+  theme_minimal() +
+  scale_fill_viridis_d()+
+  labs(title = "Number of accidents throughout the day",
+       subtitle = "By day of week and severity",
+       x = "Time of day", y = "Density", fill = "Severity")
+```
+From the visualization, we can see that the most numbers of incidents occur
+during around noon to 5 pm, which makes sense considering that is when people
+are generally most active. There are also no fatal accidents on the weekend, which
+is interesting and warrants further analysis. In addition, slight accidents
+are the least consistent throughout the day while serious and fatal accidents
+occur more consistently throughout the day.
+
+## 2 - NYC marathon winners
+
+#2a
+
+```{r histogram_and_boxplot_nyc_marathon}
+#| message: false
+#| warning: false
+#| layout-ncol: 2
+ggplot(nyc_marathon, aes(time)) +
+  geom_histogram() +
+  labs(title = "Distribution of NYC Marathon Times from 1970 to 2020",
+       x = "Marathon Time", y = "Number of Runners") +
+  theme_minimal()
+
+ggplot(nyc_marathon, aes(time)) +
+  geom_boxplot() +
+  labs(title = "Distribution of NYC Marathon Times from 1970 to 2020",
+       x = "Marathon Time") +
+  theme_minimal()
+```
+
+For the histogram, we are able to more easily see the modality of the data (here
+we see it is bimodal) and the skew. We can also more easily see the number of 
+observations for a certain marathon time.
+
+For the boxplot, we are able to more easily see the interquartile range, median,
+and outliers. The overall spread is also more easily interpretable.
+
+#2b
+```{r gender_boxplot}
+#| message: false
+#| warning: false
+ggplot(nyc_marathon, aes(time)) +
+  geom_boxplot(color = c("deepskyblue4", "deeppink")) +
+  labs(title = "Distribution of NYC Marathon Times from 1970 to 2020",
+       x = "Marathon Time") +
+  facet_wrap( ~ division) +
+  theme_minimal()
+```
+From the boxplots, we see that male NYC marathon runners from 1970 to 2020 
+have a faster median time than female NYC marathon runners from 1970 to 2020. We
+see that this is true for every percentile as well, besides the outliers. 
+We also see that female NYC marathon runners also have a 
+wider spread of outliers compared to male NYC marathon runners, who have a much
+tighter spread of outliers. The size of the interquartile range does not appear
+to be much different among the genders. 
+
+#2c
+
+```{r updated_boxplot}
+#| message: false
+#| warning: false
+ggplot(nyc_marathon, aes(time, color = division)) +
+  geom_boxplot() +
+  scale_color_manual(values = c("deepskyblue4", "deeppink")) +
+  labs(title = "Distribution of NYC Marathon Times from 1970 to 2020",
+       x = "Marathon Time") +
+  theme_minimal() +
+  labs(title = "Distribution of Marathon Times",
+       subtitle = "Colored by gender",
+       color = "Gender")
+```
+Having the boxplots side by side makes the x-axis have some redundancy. By
+combining the two boxplots into one graph, we eliminate unnecessary ink that
+comes with have two graphs and two x-axes rather than just one. Thus, the 
+data-to-ink ratio increases as we capture the same data with less ink and we
+are able to compare them easier. 
+
+#2d
+```{r scatterplot_marathon}
+#| message: false
+#| warning: false
+ggplot(nyc_marathon, aes(x = year, y = time)) +
+  geom_point(aes(color = division, shape = division)) +
+  theme_minimal() +
+  scale_color_manual(values = c("deepskyblue4", "deeppink")) +
+  labs(
+    title = "NYC Marathon Times over Years",
+    subtitle = "Colored and shaped by gender",
+    color = "Gender",
+    shape = "Gender",
+    x = "Year",
+    y = "Marathon Time"
+  )
+```
+What is evident in this graph compared to the others is the trend of the 
+marathon times for each gender across time. Here, we see that the times have 
+rapidly decreased from 1970 to 1980 and has barely decreased from 1980 and
+beyond. 
+
+## 3 - US counties
+
+
+
+#3a
+
+```{r weird_plot}
+#| message: false
+#| warning: false
+#No labels or titles here because this code just checks to see what it would visualize
+ggplot(county) +
+  geom_point(aes(x = median_edu, y = median_hh_income)) +
+  geom_boxplot(aes(x = smoking_ban, y = pop2017))
+```
+
+The following code produces both a scatterplot and a boxplot from the county
+dataset. The scatterplot has median education level as its x axis and median
+household income on its y-axis, while the boxplot has the variable smoking ban
+as its x axis and 2017 population as its y-axis variable. While the code does
+technically work, as seen as the plot created above, it does not make any sense
+because the scatterplot and boxplot have different variables on the axes, so 
+plotting them both together does not make it interpretable. 
+
+#3b
+The second plot, with each scatterplot created side by side rather than stacked
+vertically, makes it easier to compare poverty levels across different median
+education levels because having them side by side gives each plot more space
+vertically, which makes it easier to compare the poverty levels since the poverty
+level is on the y-axis. This tells us that we should facet a variable in a way
+that provides the most space for the axis that we want to study/compare, so for 
+example, we would facet the plots so they are stacked vertically when we care
+more about comparing the x-axis variable. 
+
+#3c
+```{r ex-3-plot-replications}
+#| message: false
+#| warning: false
+#| layout-ncol: 2
+ggplot(county, aes(x = homeownership, y = poverty)) +
+  geom_point() +
+  labs(title = "Plot A")
+
+ggplot(county, aes(x = homeownership, y = poverty)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(title = "Plot B")
+
+ggplot(county, aes(x = homeownership, y = poverty, group = metro)) +
+  geom_point() +
+  geom_smooth(se = FALSE, color = "green") +
+  labs(title = "Plot C")
+
+ggplot(county, aes(x = homeownership, y = poverty, group = metro)) +
+  geom_smooth(se = FALSE) +
+  geom_point() +
+  labs(title = "Plot D")
+
+ggplot(county, aes(x = homeownership, y = poverty, group = metro)) +
+  geom_point(aes(color = metro)) +
+  geom_smooth(se = FALSE, aes(linetype = metro)) +
+  labs(title = "Plot E") +
+  guides(color = guide_legend(order = 2), linetype = guide_legend(order = 1))
+
+#source for plot e code, where I used it to re-order the legend
+#https://stackoverflow.com/questions/72385502/change-ggplot2-legend-order-without-changing-the-manually-specified-aesthetics
+
+ggplot(county,
+       aes(
+         x = homeownership,
+         y = poverty,
+         group = metro,
+         color = metro
+       )) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(title = "Plot F")
+
+ggplot(county, aes(x = homeownership, y = poverty)) +
+  geom_point(aes(color = metro)) +
+  geom_smooth(se = FALSE) +
+  labs(title = "Plot G")
+
+ggplot(county, aes(x = homeownership, y = poverty)) +
+  geom_point(aes(color = metro)) +
+  labs(title = "Plot H")
+```
+
+## 4 - Rental apartments in SF
+
+```{r data-load-in}
+#| message: false
+#| warning: false
+tuesdata <- tidytuesdayR::tt_load('2022-07-05')
+tuesdata <- tidytuesdayR::tt_load(2022, week = 27)
+
+rent <- tuesdata$rent
+```
+```{r check-best-nhoods}
+#| message: false
+#| warning: false
+rent |>
+  mutate(price_per_room = price / beds) |>
+  filter(city == "san francisco") |>
+  filter(room_in_apt == 0) |>
+  filter(beds != 0) |>
+  group_by(nhood) |>
+  summarize(count = n()) |>
+  arrange(desc(count))
+```
+
+```{r data-filtering}
+#| message: false
+#| warning: false
+rent_sf <- rent |>
+  mutate(price_per_room = price / beds) |>
+  filter(city == "san francisco") |>
+  filter(beds != 0) |>
+  filter(room_in_apt == 0) |>
+  mutate(new_nhood = if_else(
+    nhood %in% c(
+      "nob hill",
+      "pacific heights",
+      "marina / cow hollow",
+      "SOMA / south beach"
+    ),
+    nhood,
+    "Other"
+  )) |>
+  group_by(year, new_nhood) |>
+  summarize(
+    mean_ppr = mean(price_per_room, na.rm = TRUE),
+    sd_ppr = sd(price_per_room / sqrt(n()))
+  )
+```
+
+```{r final-plot}
+#| message: false
+#| warning: false
+ggplot(rent_sf, aes(x = year, y = mean_ppr, color = new_nhood)) +
+  geom_point(aes(size = sd_ppr)) +
+  geom_line() +
+  theme_minimal() +
+  labs(
+    title = "Rental Prices per Bedroom of Apartments in San Francisco over Time",
+    subtitle = "by neighborhood and with variability",
+    x = "Year",
+    y = "Mean Price Per Bedroom",
+    color = "Neighborhoods",
+    size = "Standard Deviation"
+  )
+```
+First, for the data wrangling, I chose to filter out the data using the instructed
+filters (city is SF and room in apartment is 0), but I also chose to filter out na values and 
+observations where the number of bedrooms is 0. While you could include those
+observations and replace the 0 value with 1, I decided that it would be better
+to exclude them altogether because when studying price per bedroom, it would be
+more representative and meaningful to look at apartments that actually have a 
+bedroom. Ones that don't technically have a formal bedroom can impact the data
+when you group them with apartments that have one bedrooms, as the cost can be
+significantly different. Even looking at the  sample size after filtering, we 
+still have a sufficient amount of data to visualize meaningfully. 
+
+Next, I chose the four neighborhoods with the largest
+number of observations to visualize and grouped the remaining ones into an other
+category. This is because I noticed that having more than around five lines in
+the graph made it difficult to analyze, so I picked the ones with the most data 
+to work with. 
+
+Finally, I divided the standard deviation by the square root of the sample size
+, which helps make the variability not too large to compare but still to scale. 
+
+From the visualization, I can tell that across all neighborhoods, the average
+price per bedroom decreased from around 2000 to 2003, and has steadily risen
+since then, besides a large dip in 2010 and a smaller one in around 2016. I also see that while each of the four neighborhoods with the most 
+observations have a higher mean price per bedroom than the average of the others,
+the price level does not appear to be consistently significantly different across
+these four neighborhoods. Lastly, the variability across neighborhoods does not
+appear to significantly different, and the same is true across time, although
+there are certain years with high variability, like the dip around 2000 to 2003
+and the dip around 2010, which could warrant further analyses to see the reason
+and impact behind this dip in average price per bedroom. 
+
+
+## 5 - Napoleon’s march.
+
+```{r load-data}
+#| message: false
+#| warning: false
+#loading in dataset
+napoleon <- read_rds("data/napoleon.rds")
+#loading in each dataframe from dataset
+cities <- napoleon$cities
+temps <- napoleon$temperatures
+troops <- napoleon$troops
+#loading in packages used for visualization
+library(tidyverse)
+library(lubridate)
+library(ggmap)
+library(ggrepel)
+library(gridExtra)
+library(pander)
+```
+
+```{r}
+#| message: false
+#| warning: false
+
+#Below is the first plot used for the main path plot
+
+#Geom path connects the observations from the troops dataset, using the longitude and latitude data as x and y axes, grouping by troop group, colored by the direction of movement, and the size by the number of survivors
+
+#Geom text makes the label for each city along the path, again using longitude and latitude as x and y axes
+#and with the specified font details
+
+#scale_size scales the size of the points to be within a certain range
+#scale colour manual colors the path of the troops in the map by the specified colors
+
+#guides and theme_nothing makes the graph visually simpler by eliminating the grid behind the plot so that it looks more close to the original
+
+march.1812.plot.simple <- ggplot() +
+  geom_path(
+    data = troops,
+    aes(
+      x = long,
+      y = lat,
+      group = group,
+      color = direction,
+      size = survivors
+    ),
+    lineend = "round"
+  ) +
+  # geom_point(data = cities, aes(x = long, y = lat),
+  #            color = "#252523") +
+  #the code above would have placed points at each city
+  geom_text(
+    data = cities,
+    aes(x = long, y = lat, label = city),
+    color = "#252523",
+    fontface = "italic",
+    family = "New Century Schoolbook",
+    size = 3
+  ) +
+  #
+  scale_size(range = c(0.5, 10)) +
+  scale_colour_manual(values = c("#DFC17E", "#252523")) +
+  guides(color = FALSE, size = FALSE) +
+  theme_nothing()
+
+#Below changes the temperature dataframe into a nicer format but inserting a degree sign and a period between month and day
+
+temps.nice <- temps %>%
+  mutate(nice.label = paste0(temp, "°, ", month, ". ", day))
+
+#Below makes the second graph of temperature using the nicely formatting temperature dataframe
+
+#geom line makes the line graph using longitude on the x axis and temperature on the y axis
+
+#geom text repel labels each longitude point with the temperature in celsius according to the specified font
+
+#labs adds in the axes title and overall title
+
+#scale x continuous scales the x axis to match the above graph
+#scale y continuous tells the plot where to put the y axis title which is on the right
+
+#coord cartesian adds space above and below the graph
+#theme_bw sets the base font to the specified one
+#theme formats the graph to be cleaner by eliminating most of the borders, gridlines and tics along with the x axis title
+temps.1812.plot <-
+  ggplot(data = temps.nice, aes(x = long, y = temp)) +
+  geom_line() +
+  geom_text_repel(
+    aes(label = nice.label),
+    family = "New Century Schoolbook",
+    size = 2.5,
+    fontface = "italic"
+  ) +
+  labs(x = NULL, y = "° Celsius", title = "Tableau Graphique") +
+  scale_x_continuous(limits = ggplot_build(march.1812.plot.simple)$layout$panel_ranges[[1]]$x.range) +
+  scale_y_continuous(position = "right") +
+  coord_cartesian(ylim = c(-35, 5)) +
+  theme_bw(base_family = "New Century Schoolbook") +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks = element_blank(),
+    panel.border = element_blank()
+  )
+
+# Combines the two plots vertically while making sure the axes align using rbind
+both.1812.plot.simple <- rbind(ggplotGrob(march.1812.plot.simple),
+                               ggplotGrob(temps.1812.plot))
+
+# Adjust panels so that it visually looks nicer by making it more to scale and proportional
+panels <-
+  both.1812.plot.simple$layout$t[grep("panel", both.1812.plot.simple$layout$name)]
+
+# Provides the ratio of the heights of the panels for each graph
+both.1812.plot.simple$heights[panels] <- unit(c(3, 1), "null")
+
+#Creates a new page to plot the graphs on
+grid::grid.newpage()
+grid::grid.draw(both.1812.plot.simple)
+
+#Link to original code
+#https://www.andrewheiss.com/blog/2017/08/10/exploring-minards-1812-plot-with-ggplot2/
+```
+
+To make the above graph more similar to the actual one, I changed the font type from
+plain Open Sans Condensed Bold to italicized New Century Schoolbook while decreasing font size. I also
+added titles that were used in the original plot, and changed the text color
+to black to match. I also decided to not put in white background behind the 
+text as labels as the original did not have that, even though it would make it
+easier to read. Finally, I excluded the points on the
+graph as the original did not have points on them. 
+
+See the comments on the code for my own explanation for how the code works.
+
+Link to original Napoleon graph: 
+https://flowingdata.com/2008/07/17/is-minards-map-of-napoleons-march-the-greatest-statistical-graphic-ever/
