@@ -4,11 +4,12 @@ subtitle: "STA/ISS 313 - Project 1"
 author: "PHANs of Statistics"
 format: html
 editor: visual
+execute: 
+  echo: false
+  warning: false
 ---
 
 ```{r setup}
-#| include: false
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 library(dplyr)
 library(ggplot2)
@@ -48,7 +49,6 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
 ```{r q1 data wrangling}
-#| echo: false
 
 eurovision %>%
   count(year) %>%
@@ -90,7 +90,6 @@ eurovision_eras |>
 ```
 
 ```{r q1 first plot}
-#| echo: false
 #ggplot(eurovision_eras, aes(x = total_points, y = from_host_country)) +
 #  geom_density_ridges()
 
@@ -104,7 +103,6 @@ euro_by_decade %>%
 ```
 
 ```{r q1 second plot}
-#| echo: false
 
 ```
 
@@ -127,7 +125,6 @@ euro_by_decade %>%
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
 ```{r q2 data wrangling}
-#| include: false
 
 eurovision_text <- eurovision |>
   arrange(desc(total_points)) |>
@@ -140,43 +137,37 @@ euro_decades <- eurovision |>
                             year %in% 2005:2022 ~ "2004-22")) |>
   drop_na(total_points)
 
-# euro_decades <- eurovision |>
-#   mutate(decade = case_when(year %in% 1950:1959 ~ "1950s",
-#                             year %in% 1960:1969 ~ "1960s",
-#                             year %in% 1970:1979 ~ "1970s",
-#                             year %in% 1980:1989 ~ "1980s",
-#                             year %in% 1990:1999 ~ "1990s",
-#                             year %in% 2000:2009 ~ "2000s",
-#                             year %in% 2010:2019 ~ "2010s",
-#                             year %in% 2020:2022 ~ "2020s")) |>
-#   drop_na(total_points)
+euro_pct <- eurovision |>
+  group_by(event) |>
+  mutate(total_points_pct = total_points / sum(total_points))
 ```
 
 ```{r q2 first plot}
-#| echo: false
-set.seed(123)
 
-ggplot(euro_decades, aes(x = running_order, y = total_points)) +
-  geom_jitter(aes(color = decade), alpha = 0.5) +
-  geom_text(data = eurovision_text, 
-            aes(label = artist), 
-            nudge_x = -2.8, 
-            size = 6) +
-  theme_grey() +
-  theme(panel.border = element_blank(),
-        axis.title = element_text(size = 15), 
-        plot.title = element_text(size = 20), 
-        plot.subtitle = element_text(size = 18)) +
-  geom_smooth(method = lm, size = 2.5, color = "black", se = FALSE, 
-              aes(group = decade)) +
-  geom_smooth(method = "lm", aes(color = decade)) + 
-  labs(x = "Running order", y = "Total points", color = "Decade", 
-       title = "Total points earned by Eurovision contestants by running order", 
-       subtitle = "By decade of competition") +
-  theme_minimal()
+# set.seed(123)
+
+# ggplot(euro_decades, aes(x = running_order, y = total_points)) +
+#   geom_jitter(aes(color = decade), alpha = 0.5) +
+#   geom_text(data = eurovision_text, 
+#             aes(label = artist), 
+#             nudge_x = -2.8, 
+#             size = 6) +
+#   theme_grey() +
+#   theme(panel.border = element_blank(),
+#         axis.title = element_text(size = 15), 
+#         plot.title = element_text(size = 20), 
+#         plot.subtitle = element_text(size = 18)) +
+#   geom_smooth(method = lm, size = 2.5, color = "black", se = FALSE, 
+#               aes(group = decade)) +
+#   geom_smooth(method = "lm", aes(color = decade)) + 
+#   labs(x = "Running order", y = "Total points", color = "Decade", 
+#        title = "Total points earned by Eurovision contestants by running order", 
+#        subtitle = "By decade of competition") +
+#   theme_minimal()
 ```
 
 ```{r alternative-q2-first-plot}
+
 euro_decades2 <- euro_decades |>
   group_by(decade, running_order) |>
   mutate(mean_points = mean(total_points))
@@ -188,7 +179,7 @@ ggplot(euro_decades2, aes(x = running_order, y = mean_points, color = decade)) +
 ```
 
 ```{r q2 second plot data-wrangling}
-#| echo: false
+
 euro_places <- eurovision |>
   drop_na(total_points, running_order) |>
   group_by(event) |>
@@ -204,6 +195,7 @@ euro_places <- eurovision |>
 ```
 
 ```{r q2-second-plot}
+
 ggplot(euro_places, aes(x = year, y = running_order)) +
   geom_line() +
   facet_wrap(~ top3, ncol = 1) +
