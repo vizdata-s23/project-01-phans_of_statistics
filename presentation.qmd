@@ -86,7 +86,7 @@ eurovision_filt <- eurovision |>
   group_by(year) |>
   mutate(num_ranks = max(rank)) |>
   ungroup() |>
-  mutate(rank_pct = 1 - (rank / num_ranks)) |>
+  mutate(rank_pct = (1 - (rank / num_ranks))*100) |>
   group_by(year) |>
   mutate(num_participants = n()) |>
   ungroup() |>
