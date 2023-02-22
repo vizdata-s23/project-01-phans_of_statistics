@@ -20,20 +20,32 @@ eurovision <- read.csv("data/eurovision.csv")
 
 eurovision_filt <- eurovision |>
   filter(year != "2020") |>
-  mutate(era = case_when(year %in% 1956:1979 ~ "1956-1979",
-                            year %in% 1980:1999 ~ "1980-1999",
-                            year %in% 2000:2010 ~ "2000-2010",
-                            year %in% 2011:2022 ~ "2011-2022")) |>
-  mutate(from_host_country = case_when(host_country == artist_country ~ "Yes",
-                                       host_country != artist_country ~ "No")) |>
-  mutate(decade = case_when(year %in% 1950:1959 ~ "1950s",
-                            year %in% 1960:1969 ~ "1960s",
-                            year %in% 1970:1979 ~ "1970s",
-                            year %in% 1980:1989 ~ "1980s",
-                            year %in% 1990:1999 ~ "1990s", 
-                            year %in% 2000:2009 ~ "2000s", 
-                            year %in% 2010:2019 ~ "2010s", 
-                            year %in% 2020:2022 ~ "2020s")) |>
+  mutate(
+    era = case_when(
+      year %in% 1956:1979 ~ "1956-1979",
+      year %in% 1980:1999 ~ "1980-1999",
+      year %in% 2000:2010 ~ "2000-2010",
+      year %in% 2011:2022 ~ "2011-2022"
+    )
+  ) |>
+  mutate(
+    from_host_country = case_when(
+      host_country == artist_country ~ "Yes",
+      host_country != artist_country ~ "No"
+    )
+  ) |>
+  mutate(
+    decade = case_when(
+      year %in% 1950:1959 ~ "1950s",
+      year %in% 1960:1969 ~ "1960s",
+      year %in% 1970:1979 ~ "1970s",
+      year %in% 1980:1989 ~ "1980s",
+      year %in% 1990:1999 ~ "1990s",
+      year %in% 2000:2009 ~ "2000s",
+      year %in% 2010:2019 ~ "2010s",
+      year %in% 2020:2022 ~ "2020s"
+    )
+  ) |>
   group_by(year) |>
   mutate(num_ranks = max(rank)) |>
   ungroup() |>
@@ -46,11 +58,14 @@ eurovision_filt <- eurovision |>
   ungroup() |>
   mutate(total_points_pct = (num_participants / 60) * unweighted_pct_total_points) |>
   group_by(year) |>
-  mutate(running_order_group = case_when(
-    running_order / max(running_order) > 2/3 ~ "End", 
-    running_order / max(running_order) > 1/3 ~ "Middle", 
-    running_order / max(running_order) > 0 ~ "Beginning")) |>
-  mutate(running_order_group = factor(running_order_group, 
+  mutate(
+    running_order_group = case_when(
+      running_order / max(running_order) > 2 / 3 ~ "End",
+      running_order / max(running_order) > 1 / 3 ~ "Middle",
+      running_order / max(running_order) > 0 ~ "Beginning"
+    )
+  ) |>
+  mutate(running_order_group = factor(running_order_group,
                                       levels = c("Beginning", "Middle", "End")))
 ```
 
@@ -81,7 +96,6 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 ### Analysis
 
 ```{r q1 data wrangling}
-
 eurovision |>
   count(year) |>
   ggplot(aes(x = year, y = n)) +
@@ -99,63 +113,74 @@ eurovision_filt |>
 ```
 
 ```{r q1 first plot}
-
 eurovision_filt |>
   filter(from_host_country == "Yes") |>
   ggplot(aes(x = rank_pct, y = decade)) +
   geom_density_ridges() +
   labs(x = "Rank percentile",
-       y = "Decade", 
+       y = "Decade",
        title = "Distribution of home country participants' rank percentile by decade") +
   theme_minimal()
 ```
 
 ```{r q1 second plot}
-
 # Plot distribution of total points by from_host_country
 
-ggplot(eurovision_filt, aes(x = total_points_pct, fill = from_host_country)) + 
-  geom_histogram(binwidth = 10, alpha = 0.5, position = "identity") +
-  labs(title = "Distribution of total points percentage for host competitors", 
+ggplot(eurovision_filt,
+       aes(x = total_points_pct, fill = from_host_country)) +
+  geom_histogram(binwidth = 10,
+                 alpha = 0.5,
+                 position = "identity") +
+  labs(title = "Distribution of total points percentage for host competitors",
        x = "Total points percentage", y = "Count") +
-  facet_wrap(~ from_host_country) +
+  facet_wrap( ~ from_host_country) +
   theme_minimal()
 
 # Plot distribution of rank by from_host_country
-ggplot(eurovision_filt, aes(x = rank_pct, fill = from_host_country)) + 
-  geom_histogram(binwidth = 5, alpha = 0.5, position = "identity") +
-  labs(title = "Distribution of rank percentile for host competitors", 
+ggplot(eurovision_filt, aes(x = rank_pct, fill = from_host_country)) +
+  geom_histogram(binwidth = 5,
+                 alpha = 0.5,
+                 position = "identity") +
+  labs(title = "Distribution of rank percentile for host competitors",
        x = "Rank percentile", y = "Count") +
-  facet_wrap(~ from_host_country) +
+  facet_wrap( ~ from_host_country) +
   theme_minimal()
 
 #violin plot
-ggplot(eurovision_filt, aes(x = from_host_country, y = total_points_pct, 
-                            fill = from_host_country)) +
-  geom_violin(trim = FALSE, scale = "count", alpha = 0.7) +
-  geom_boxplot(width = 0.2, fill = "white", outlier.shape = NA) +
-  labs(title = "Distribution of total points percentage for host competitors", 
+ggplot(
+  eurovision_filt,
+  aes(x = from_host_country, y = total_points_pct,
+      fill = from_host_country)
+) +
+  geom_violin(trim = FALSE,
+              scale = "count",
+              alpha = 0.7) +
+  geom_boxplot(width = 0.2,
+               fill = "white",
+               outlier.shape = NA) +
+  labs(title = "Distribution of total points percentage for host competitors",
        x = "From Host Country?", y = "Total points percentage") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"), 
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"),
                     name = "From Host Country?") +
   theme_minimal() +
-  theme(legend.position = "top", 
+  theme(legend.position = "top",
         axis.title.y = element_text(margin = margin(r = 10))) +
   coord_flip()
 
 #the 3 above plots are very skewed bc of more observations in "no" than "yes" for from_home_country; so instead we do:
 
-ggplot(eurovision_filt, aes(x = total_points_pct, fill = from_host_country)) +
+ggplot(eurovision_filt,
+       aes(x = total_points_pct, fill = from_host_country)) +
   geom_density(alpha = 0.5, size = 1.2) +
-  labs(title = "Distribution of total points percentage for host competitors", 
+  labs(title = "Distribution of total points percentage for host competitors",
        x = "Total points percentage", y = "Density") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"), 
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"),
                     name = "From Host Country?") +
   theme_minimal()
 
 ggplot(eurovision_filt, aes(x = total_points, fill = from_host_country)) +
   geom_density(alpha = 0.5, linewidth = 1.2) +
-  labs(title = "Distribution of total points percentage for host competitors", 
+  labs(title = "Distribution of total points percentage for host competitors",
        x = "Total points percentage", y = "Density") +
   scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country?") +
   theme_minimal()
@@ -180,48 +205,60 @@ The first plot we use to answer this question is a group of boxplots comparing t
 ### Analysis
 
 ```{r q2 first plot}
-
-ggplot(eurovision_filt, aes(x = running_order_group, y = total_points_pct, 
-                            color = running_order_group)) +
+ggplot(
+  eurovision_filt,
+  aes(x = running_order_group, y = total_points_pct,
+      color = running_order_group)
+) +
   geom_boxplot() +
-  facet_wrap(~ era) +
-  labs(color = "Appearance time", 
-       y = "Total points percentage", 
-       x = NULL, 
-       title = "Percentage of total points earned for contestants by appearance time", 
-       subtitle = "By era") +
+  facet_wrap( ~ era) +
+  labs(
+    color = "Appearance time",
+    y = "Total points percentage",
+    x = NULL,
+    title = "Percentage of total points earned for contestants by appearance time",
+    subtitle = "By era"
+  ) +
   theme_minimal() +
-  theme(axis.text.x = element_blank(), 
+  theme(axis.text.x = element_blank(),
         strip.background = element_rect(fill = "grey"))
 ```
 
 ```{r q2 second plot data-wrangling}
-
 euro_places <- eurovision_filt |>
   drop_na(total_points_pct, running_order) |>
   group_by(event) |>
   arrange(desc(total_points_pct), .by_group = TRUE) |>
   mutate(group_row_num = row_number(event)) |>
-  mutate(top3 = case_when(
-    group_row_num == 1 ~ "First Place",
-    group_row_num == 2 ~ "Second Place",
-    group_row_num == 3 ~ "Third Place",
-    group_row_num > 3 ~ "Other"
-  )) |>
-  slice(1:3)
+  mutate(top3 = case_when(group_row_num <= 3 ~ "First Three",
+                          group_row_num > 3 ~ "Other")) |>
+  group_by(event, top3, year) |>
+  summarize(top3_final = as.numeric(paste(mean(running_order)))) |>
+  arrange(year)
 ```
 
 ```{r q2-second-plot}
-
-ggplot(euro_places, aes(x = year, y = running_order)) +
-  geom_line(aes(color = top3), width = 0.5) +
-  facet_wrap(~ top3, ncol = 1) +
-  labs(title = "Running order of top three finishers in Eurovision over time",
-       x = "Year", y = "Running order", color = "Placement") +
+ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
+  geom_line(width = 0.5) +
+  geom_point(size = 1) +
+  labs(
+    title = "Performance order in Eurovision over time",
+    x = "Year",
+    y = "Order of performance",
+    color = "Final Place"
+  ) +
+  scale_color_manual(values = c("#097969", "#FA5F55")) +
   geom_smooth(method = "lm") +
-  scale_color_manual(values = c("#DAA520", "#808080", "#967444")) +
   theme_minimal() +
-  theme(strip.background = element_rect(fill = "grey"))
+  theme(
+    legend.position = c(.11, .87),
+    legend.background = element_rect(
+      fill = "white",
+      color = "black",
+      linewidth = 0.4
+    )
+  ) +
+  guides(color = guide_legend(override.aes = list(fill = NA)))
 ```
 
 ### Discussion
@@ -233,3 +270,5 @@ Combining the results from the graph, we conclude that performing later in the r
 ## References
 
 https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-05-17/readme.md
+
+https://www.markhneedham.com/blog/2015/06/27/r-dplyr-squashing-multiple-rows-per-group-into-one/
