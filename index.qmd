@@ -156,8 +156,8 @@ ggplot(eurovision_filt, aes(x = rank_pct, y = era_binary, fill = from_host_count
        y = "Era",
        title = "Rank percentiles of home country and non-home country participants",
        subtitle = "By era: pre-2000 vs. post-2000") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?")
-  #guides(fill = guide_legend(title = "Host country participant?"))
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?") +
+  theme_minimal()
 ```
 
 ### Discussion
@@ -167,6 +167,8 @@ The first density plot shows that there are noticeable differences in the distri
 In the second plot, we can compare the two non-host country distributions and see little skew or peak in both, with "away" country participants tending to perform slightly better post-2000. We do not see substantial evidence to draw any conclusions about lack of home country advantage impacting performance over time.
 
 Honing in on solely host country participants, we observe a unimodal distribution of pre-2000 rank percentiles, while a more bimodal distribution post-2000 rank percentiles. While the rightmost peak of the post-2000 distribution is fairly aligned with the peak of the pre-2000 distribution - right around the 75th percentile - the leftmost peak occurs near the 10th percentile. Thus, the pre-2000 distribution has a much stronger left skew, leading us to conclude that home country advantage was more prevalent in 20th century Eurovisions than 21st century Eurovisions. One potential reason for this falloff could be the wave of digitization and media. More accessible forms of watching the competition, such as television, streaming, and online replays, might disincentive in-person attendance, even for fans residing in the host country. For instance, Italy, the host country of Eurovision 2022, boasted an average TV audience of [6.6 million viewers](https://eurovision.tv/story/eurovision-2022-161-million-viewers), up 53% year-over-year and by far the largest audience among all countries. Furthermore, "the number watching the Grand Final on YouTube rose nearly 50% year on year to 7.6 million unique viewers." It is clear that online engagement has taken off and will only continue to do so, prompting many to watch for free from the comfort of their own homes, even if the competition is within their country.
+
+Overall, based on the results from both plots, there is not a strong enough relationship between being from the host country and performance (points, rank) to make a legitimate claim.
 
 ## Question 2: Performance Order and Success
 

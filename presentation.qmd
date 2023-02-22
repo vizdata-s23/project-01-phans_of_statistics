@@ -108,7 +108,17 @@ eurovision_filt <- eurovision |>
 
 ## Introduction to the Data
 
-## Q1.1: Is there a home country advantage in Eurovision?
+- Dataset obtained from Tidy Tuesday
+
+- 2,005 observations representing all contestants and their songs in the history of Eurovision
+
+- 18 variables covering competition and contestant information and outcomes
+
+- Removed all 2020 contestants since the contest was canceled due to COVID
+
+# Question 1: Is there a home country advantage in Eurovision?
+
+## Examining total points obtained by host country and non-host country participants
 
 ::: columns
 ::: {.column width="100%"}
@@ -128,7 +138,7 @@ ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
 :::
 :::
 
-## Q1.2: Home country advantage - a centennial turning point?
+## Home country advantage - a centennial turning point?
 
 ::: columns
 ::: {.column width="100%"}
@@ -142,13 +152,15 @@ ggplot(eurovision_filt, aes(x = rank_pct, y = era_binary, fill = from_host_count
        y = "Era",
        title = "Rank percentiles of home country and non-home country participants",
        subtitle = "By era: pre-2000 vs. post-2000") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?")
-  #guides(fill = guide_legend(title = "Host country participant?"))
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?") +
+  theme_minimal()
 ```
 :::
 :::
 
-## Q2.1: Does the order in which contestants perform affect their success?
+# Question 2: Does the order in which contestants perform affect their success?
+
+## Eurovision success by beginning, middle, and end performances
 
 ::: columns
 ::: {.column width="100%"}
@@ -178,7 +190,7 @@ ggplot(
 :::
 :::
 
-## Q2.2: Differing trends in performance order over time
+## Differing trends in performance order over time
 
 ```{r}
 #| label: q2 data wrangling
