@@ -16,7 +16,7 @@ library(dplyr)
 library(ggplot2)
 library(tidyverse)
 library(ggridges)
-eurovision <- read.csv("data/eurovision.csv")
+eurovision <- read_csv("data/eurovision.csv")
 
 eurovision_filt <- eurovision |>
   filter(year != "2020") |>

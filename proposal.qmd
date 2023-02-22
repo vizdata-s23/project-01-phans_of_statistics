@@ -14,7 +14,7 @@ execute:
 #| warning: false
 
 library(tidyverse)
-eurovision <- read.csv("data/eurovision.csv")
+eurovision <- read_csv("data/eurovision.csv")
 ```
 
 ## Dataset
