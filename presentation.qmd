@@ -86,7 +86,7 @@ eurovision_filt <- eurovision |>
 
 ## Introduction to the Data
 
-# Is there a home country advantage in Eurovision?
+# Q1: Is there a home country advantage in Eurovision?
 
 ## Host Country Vs. Non-Host Country
 
@@ -111,7 +111,7 @@ ggplot(eurovision_filt, aes(x = total_points, fill = from_host_country)) +
 :::
 :::
 
-# Does the order in which contestants perform affect their success?
+# Q2: Does the order in which contestants perform affect their success?
 
 ## Total points percentages by appearance time
 
@@ -141,3 +141,51 @@ ggplot(
 :::
 :::
 
+## Order of performance over the years
+
+```{r q2 second plot data-wrangling}
+#| label: q2-wrangling
+#| include: false
+
+euro_places <- eurovision_filt |>
+  drop_na(total_points_pct, running_order) |>
+  group_by(event) |>
+  arrange(desc(total_points_pct), .by_group = TRUE) |>
+  mutate(group_row_num = row_number(event)) |>
+  mutate(top3 = case_when(group_row_num <= 3 ~ "First Three",
+                          group_row_num > 3 ~ "Other")) |>
+  group_by(event, top3, year) |>
+  summarize(top3_final = as.numeric(paste(mean(running_order)))) |>
+  arrange(year)
+```
+
+::: columns
+::: {.column width="100%"}
+```{r}
+#| warning: false
+#| echo: false
+
+ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
+  geom_line(width = 0.5) +
+  geom_point(size = 1) +
+  labs(
+    title = "Performance order in Eurovision over time",
+    x = "Year",
+    y = "Average order of performance",
+    color = "Final Place"
+  ) +
+  scale_color_manual(values = c("#097969", "#FA5F55")) +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_minimal() +
+  theme(
+    legend.position = c(.11, .87),
+    legend.background = element_rect(
+      fill = "white",
+      color = "black",
+      linewidth = 0.4
+    )
+  ) +
+  guides(color = guide_legend(override.aes = list(fill = NA)))
+```
+:::
+:::

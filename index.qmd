@@ -244,11 +244,11 @@ ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
   labs(
     title = "Performance order in Eurovision over time",
     x = "Year",
-    y = "Order of performance",
+    y = "Average order of performance",
     color = "Final Place"
   ) +
   scale_color_manual(values = c("#097969", "#FA5F55")) +
-  geom_smooth(method = "lm") +
+  geom_smooth(method = "lm", se = FALSE) +
   theme_minimal() +
   theme(
     legend.position = c(.11, .87),
