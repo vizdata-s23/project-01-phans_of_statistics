@@ -132,16 +132,7 @@ eurovision_filt |>
 
 ```{r}
 #| label: q1-first-plot
-
-eurovision_filt |>
-  filter(from_host_country == "Yes") |>
-  ggplot(aes(x = rank_pct, y = decade)) +
-  geom_density_ridges() +
-  labs(x = "Rank percentile",
-       y = "Decade",
-       title = "Distribution of home country participants' rank percentile by decade") +
-  theme_minimal()
-
+#| 
 eurovision_filt |>
   filter(from_host_country == "Yes") |>
   ggplot(aes(x = rank_pct, y = era_binary)) +
@@ -150,6 +141,15 @@ eurovision_filt |>
        y = "Era",
        title = "Distribution of home country participants' rank percentile",
        subtitle = "By era: pre-2000 vs. post-2000") +
+  theme_minimal()
+
+eurovision_filt |>
+  filter(from_host_country == "Yes") |>
+  ggplot(aes(x = rank_pct, y = decade)) +
+  geom_density_ridges() +
+  labs(x = "Rank percentile",
+       y = "Decade",
+       title = "Distribution of home country participants' rank percentile by decade") +
   theme_minimal()
 
 #eurovision_filt |>
