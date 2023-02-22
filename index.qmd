@@ -76,10 +76,10 @@ eurovision |>
        y = "Number of participating countries", color = "Decade", 
        title = "More countries have joined Eurovision over time")
 
-eurovision_eras |>
+eurovision_filt |>
   count(era, sort = TRUE)
 
-eurovision_eras |>
+eurovision_filt |>
   count(from_host_country, rank, sort = TRUE)
 ```
 
