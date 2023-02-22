@@ -1,14 +1,18 @@
 {
-  "hash": "5d72382323f221b137f011f6d741bb23",
+  "hash": "ad911f742dd12024990cb508b8343775",
   "result": {
-    "markdown": "---\ntitle: \"Visualizing Factors Leading to Success in Eurovision Competitions\"\nsubtitle: \"STA/ISS 313 - Spring 2023 - Project 1\"\nauthor: \"PHANs of Statistics\"\ntitle-slide-attributes:\n  data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg\n  data-background-size: stretch\n  data-slide-number: none\nformat: revealjs\neditor: visual\nexecute:\n  echo: false\n---\n\n\n\n\n\n\n\n\n## Introduction to the Data\n\n# Is there a home country advantage in Eurovision?\n\n## Host Country Vs. Non-Host Country\n\n::: columns\n::: {.column width=\"30%\"}\n-   We want to compare the distributions of normalized points/rankings between host country participants and non-host country participants\n:::\n\n::: {.column width=\"70%\"}\n\n::: {.cell}\n::: {.cell-output-display}\n![](presentation_files/figure-html/unnamed-chunk-4-1.png){width=70%}\n:::\n:::\n\n:::\n:::\n\n# Does the order in which contestants perform affect their success?\n\n## Total points percentages by appearance time\n\n::: columns\n::: {.column width=\"100%\"}\n:::\n::: {.column width=\"100%\"}\n\n::: {.cell}\n::: {.cell-output-display}\n![](presentation_files/figure-html/unnamed-chunk-5-1.png){width=70%}\n:::\n:::\n\n:::\n:::\n\n",
+    "markdown": "---\ntitle: \"Visualizing Factors Leading to Success in Eurovision Competitions\"\nsubtitle: \"STA/ISS 313 - Spring 2023 - Project 1\"\nauthor: \"PHANs of Statistics\"\ntitle-slide-attributes:\n  data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg\n  data-background-size: stretch\n  data-slide-number: none\nformat: revealjs\neditor: visual\nexecute: \n  echo: false\n  warning: false\n  message: false\n---\n\n\n\n\n\n\n\n\n## Introduction to the Data\n\n# Q1: Is there a home country advantage in Eurovision?\n\n## Host Country Vs. Non-Host Country\n\n::: columns\n::: {.column width=\"100%\"}\n\n::: {.cell}\n::: {.cell-output-display}\n![](presentation_files/figure-revealjs/q1 first plot-1.png){width=70%}\n:::\n:::\n\n:::\n:::\n\n## Host Country Vs. Non-Host Country\n\n::: columns\n::: {.column width=\"100%\"}\n\n::: {.cell}\n::: {.cell-output-display}\n![](presentation_files/figure-revealjs/q1 second plot-1.png){width=70%}\n:::\n:::\n\n:::\n:::\n\n# Q2: Does the order in which contestants perform affect their success?\n\n## Total points percentages by appearance time\n\n::: columns\n::: {.column width=\"100%\"}\n\n::: {.cell}\n::: {.cell-output-display}\n![](presentation_files/figure-revealjs/q2 first plot-1.png){width=70%}\n:::\n:::\n\n:::\n:::\n\n## Order of performance over the years\n\n\n\n\n\n::: columns\n::: {.column width=\"100%\"}\n\n::: {.cell}\n::: {.cell-output-display}\n![](presentation_files/figure-revealjs/q2 second plot-1.png){width=70%}\n:::\n:::\n\n:::\n:::\n",
     "supporting": [
       "presentation_files"
     ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
-    "includes": {},
+    "includes": {
+      "include-after-body": [
+        "\n<script>\n  // htmlwidgets need to know to resize themselves when slides are shown/hidden.\n  // Fire the \"slideenter\" event (handled by htmlwidgets.js) when the current\n  // slide changes (different for each slide format).\n  (function () {\n    // dispatch for htmlwidgets\n    function fireSlideEnter() {\n      const event = window.document.createEvent(\"Event\");\n      event.initEvent(\"slideenter\", true, true);\n      window.document.dispatchEvent(event);\n    }\n\n    function fireSlideChanged(previousSlide, currentSlide) {\n      fireSlideEnter();\n\n      // dispatch for shiny\n      if (window.jQuery) {\n        if (previousSlide) {\n          window.jQuery(previousSlide).trigger(\"hidden\");\n        }\n        if (currentSlide) {\n          window.jQuery(currentSlide).trigger(\"shown\");\n        }\n      }\n    }\n\n    // hookup for slidy\n    if (window.w3c_slidy) {\n      window.w3c_slidy.add_observer(function (slide_num) {\n        // slide_num starts at position 1\n        fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);\n      });\n    }\n\n  })();\n</script>\n\n"
+      ]
+    },
     "engineDependencies": {},
     "preserve": {},
     "postProcess": true
