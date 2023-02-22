@@ -157,6 +157,7 @@ eurovision_filt |>
        y = "Era",
        title = "Rank percentiles of home country and non-home country participants",
        subtitle = "By era: pre-2000 vs. post-2000") +
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"))
   theme_minimal() +
   guides(fill = guide_legend(title = "Host country participant?"))
 ```
@@ -177,7 +178,7 @@ Our second question asks whether the order in which contestants perform affect t
 
 ### Approach
 
-The first plot we use to answer this question is a group of violin comparing the adjusted percentages of points earned described in the first question (`total_points_prop`) by the appearance time of the song in the competition, defined as being in the first third ("beginning") , second third ("middle"), or last third ("end") of the performance by running order (`running_order_group`). These violin plots are then faceted by the `era_binary` variable (pre-2000 or post-2000), in which the competition occurred (as previously mentioned, we manually chose these eras to best balance out the number of observations in each era). A violin plot was chosen because this made it easier to observe the entire distribution of total points proportions for each of the groups, especially seeing peaks in the distributions. Furthermore, the skew of the distributions can be analyzed easily with violin plots, which can highlight which groups have more extreme outliers. Finally, the violin plots are faceted by era because we wanted to observe temporal trends in total points percentage for the three appearance groups.
+The first plot we use to answer this question is a group of violin plots comparing the adjusted percentages of points earned described in the first question (`total_points_prop`) by the appearance time of the song in the competition, defined as being in the first third ("beginning") , second third ("middle"), or last third ("end") of the performance by running order (`running_order_group`). These violin plots are then faceted by the `era_binary` variable (pre-2000 or post-2000), in which the competition occurred (as previously mentioned, we manually chose these eras to best balance out the number of observations in each era). A violin plot was chosen because this made it easier to observe the entire distribution of total points proportions for each of the groups, especially seeing peaks in the distributions. Furthermore, the skew of the distributions can be analyzed easily with violin plots, which can highlight which groups have more extreme outliers. Finally, the violin plots are faceted by era because we wanted to observe temporal trends in total points percentage for the three appearance groups.
 
 The second plot is a line graph with `year` on the x-axis and the average order of performance on the y-axis, colored by whether the participants placed in the top three or not (`top3`). A line graph was chosen because it is easy to see the trends of performance order temporally, and overlaying the lines allows for easy comparison. In order to prevent overcluttering and allow for easier analysis, we decided to plot the average order of performance rather than a scatter plot. For the same reason, we simplified the groupings to top three and not top three as there was not a significant difference in performance order across the top three, but the difference became more evidence as we included more places.
 
@@ -192,7 +193,8 @@ ggplot(
       color = running_order_group)
 ) +
   geom_violin() +
-  facet_wrap(~ era_binary, nrow = 1) +
+  facet_wrap( ~ factor(era_binary, levels = c("Pre-2000", "Post-2000")), 
+                       nrow = 1) +
   labs(
     color = "Appearance time",
     y = "Percentage of total points",
@@ -203,7 +205,6 @@ ggplot(
   theme_minimal() +
   theme(axis.text.x = element_blank(),
         strip.background = element_rect(fill = "grey"))
-
 ```
 
 ```{r}
@@ -234,7 +235,7 @@ ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
     y = "Average order of performance",
     color = "Final Place"
   ) +
-  scale_color_manual(values = c("#097969", "#FA5F55")) +
+  scale_color_manual(values = c("#f47b6e", "#6baed6")) +
   geom_smooth(method = "lm", se = FALSE) +
   theme_minimal() +
   theme(
@@ -250,11 +251,11 @@ ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
 
 ### Discussion
 
-From our first graph,
+From our first graph, we observe that the modes for the distributions tend to lie under a total points proportion of 0.02, indicating that most contestants hold a small proportion of total points in their respective competitions, regardless of era or if they went at the beginning, middle, or end of Eurovision. Interestingly, the tails of the distributions for post-2000 contestants are much thinner, and extend more in a positive direction. Thus, it is evident that while contestants in newer competitions have been more capable of snagging higher total point proportions in their competitions, these make up a very small proportion of contestants. This is most evident for contestants who appeared in the middle of Eurovision post-2000, as this distribution reaches around 0.08 total points proportion, while exhibiting an extremely thin right tail, and thus, extreme right-skewness.
 
 From our second graph, we see consistent results with the first one. For first, second, and third place finishers, we see an almost identical trend-line: a slight positive relationship between year and running order, suggesting that the top three finishers in Eurovision generally performed slightly later in the order than their predecessors from the previous years. Also, there is not a significant difference between the running order of first, second, and third place finishers. However, overall, the lines are so volatile that it suggests that running order is not a very strong factor in performance.
 
-Combining the results from the graph, we conclude that performing later in the running order is correlated slightly with better performance, which could be explained by the fact that people may remember the songs performed towards the end more as they are the most recent in their memory when they vote. The trend that this has more of an impact in recent years could be explained by the fact that Eurovision has expanded over the years, meaning more performers, which would make it harder to remember the earlier performers during voting. Finally, the fact that the running orders of the top three finishers are not too different from each other despite the above results could be explained by the fact that running order matters more for distinguishing the above average from the rest but less for the best of the best.
+Combining the results from the graph, we conclude that performing later in the running order is correlated slightly with better performance than performing earlier, which could be explained by the fact that people may remember the songs performed towards the end more as they are the most recent in their memory when they vote. The trend that this has more of an impact in recent years could be explained by the fact that Eurovision has expanded over the years, meaning more performers, which would make it harder to remember the earlier performers during voting. Finally, the fact that the running orders of the top three finishers are not too different from each other despite the above results could be explained by the fact that running order matters more for distinguishing the above average from the rest but less for the best of the best.
 
 ## References
 
@@ -267,4 +268,3 @@ https://www.markhneedham.com/blog/2015/06/27/r-dplyr-squashing-multiple-rows-per
 https://www.aussievision.net/post/a-history-of-eurovision-rule-changes
 
 https://eurovision.tv/story/eurovision-2022-161-million-viewers
-

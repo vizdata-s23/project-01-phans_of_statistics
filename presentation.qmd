@@ -143,6 +143,7 @@ eurovision_filt |>
        y = "Era",
        title = "Rank percentiles of home country and non-home country participants",
        subtitle = "By era: pre-2000 vs. post-2000") +
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"))
   theme_minimal() +
   guides(fill = guide_legend(title = "Host country participant?"))
 ```
@@ -163,7 +164,8 @@ ggplot(
       color = running_order_group)
 ) +
   geom_violin() +
-  facet_wrap( ~ era_binary, nrow = 1) +
+  facet_wrap( ~ factor(era_binary, levels = c("Pre-2000", "Post-2000")), 
+                       nrow = 1) +
   labs(
     color = "Appearance time",
     y = "Percentage of total points",
@@ -210,7 +212,7 @@ ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
     y = "Average order of performance",
     color = "Final Place"
   ) +
-  scale_color_manual(values = c("#097969", "#FA5F55")) +
+  scale_color_manual(values = c("#f47b6e", "#6baed6")) +
   geom_smooth(method = "lm", se = FALSE) +
   theme_minimal() +
   theme(
