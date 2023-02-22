@@ -169,7 +169,7 @@ ggplot(eurovision_filt, aes(x = total_points, fill = from_host_country)) +
 
 ### Introduction
 
-Introduction (1-2 paragraphs): Introduction to the question and what parts of the dataset are necessary to answer the question. Also discuss why you\'re interested in this question.
+Introduction (1-2 paragraphs): Introduction to the question and what parts of the dataset are necessary to answer the question. Also discuss why you're interested in this question.
 
 We are interested in this question because we wanted to see if voters were biased towards certain performances based on their performance order. In these types of competitions, there is always fear of lack of voter consistency due to recency bias or boredom as performances continue throughout the competition. By observing if there are significant trends in how voters vote by performance order, we can gain a better understanding of these biases and how they affect the success of contestants.
 
