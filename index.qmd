@@ -12,13 +12,17 @@ execute:
 
 ```{r}
 #| label: setup
-
+#| include: false
 library(dplyr)
 library(ggplot2)
 library(tidyverse)
 library(ggridges)
 eurovision <- read_csv("data/eurovision.csv")
+```
 
+```{r}
+#| label: master data frame
+#| include: false
 eurovision_filt <- eurovision |>
   filter(year != "2020") |>
   mutate(
@@ -98,6 +102,7 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 
 ```{r}
 #| label: q1-data-wrangling
+#| include: false
 
 eurovision |>
   count(year) |>
