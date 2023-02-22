@@ -83,7 +83,7 @@ eurovision_filt <- eurovision |>
 
 ## Abstract
 
-(1 paragraph): Project abstract.
+In recent years, the Eurovision competition has become the premier international music contest, and has spread from its European bubble to global fame. Thus, we have conducted a study to visualize important factors that could lead to success in these competition. The first part of our study asks if contestants from host countries do better than those who are not. Using a visualization, we were able to determine that being there is not string enough evidence to suggest that being from the home country gives a contestant a so-called "home field advantage." The second part of our study analyzes whether performance order in the competition has effects on success too. Indeed, again using a visualization, we were able to determine that performance order did in fact impact contestant success, specifically that going earlier in the competition did not bode well for competitors. By analyzing these Eurovision trends, we are thus able to visualize and understand what factors lead to success in the competition, while also studying voter bias and inconsistency within the voter ranks.
 
 ------------------------------------------------------------------------
 
