@@ -108,7 +108,7 @@ eurovision_filt <- eurovision |>
 
 ## Introduction to the Data
 
-## Q1: Is there a home country advantage in Eurovision?
+## Q1.1: Is there a home country advantage in Eurovision?
 
 ::: columns
 ::: {.column width="100%"}
@@ -128,7 +128,7 @@ ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
 :::
 :::
 
-## Home country advantage: A Centennial Turning Point?
+## Q1.2: Home country advantage - a centennial turning point?
 
 ::: columns
 ::: {.column width="100%"}
@@ -136,21 +136,19 @@ ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
 #| label: q1 second plot
 #| echo: false
 
-eurovision_filt |>
-  ggplot(aes(x = rank_pct, y = era_binary, fill = from_host_country)) +
+ggplot(eurovision_filt, aes(x = rank_pct, y = era_binary, fill = from_host_country)) +
   geom_density_ridges(alpha = 0.5) +
   labs(x = "Rank percentile",
        y = "Era",
        title = "Rank percentiles of home country and non-home country participants",
        subtitle = "By era: pre-2000 vs. post-2000") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"))
-  theme_minimal() +
-  guides(fill = guide_legend(title = "Host country participant?"))
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?")
+  #guides(fill = guide_legend(title = "Host country participant?"))
 ```
 :::
 :::
 
-## Q2: Does the order in which contestants perform affect their success?
+## Q2.1: Does the order in which contestants perform affect their success?
 
 ::: columns
 ::: {.column width="100%"}
@@ -180,7 +178,7 @@ ggplot(
 :::
 :::
 
-## Differing trends in performance order over time
+## Q2.2: Differing trends in performance order over time
 
 ```{r}
 #| label: q2 data wrangling
