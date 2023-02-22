@@ -95,7 +95,7 @@ eurovision_filt <- eurovision |>
 -   We want to compare the distributions of normalized points/rankings between host country participants and non-host country participants
 :::
 
-::: {.column width="70%"}
+::: {.column width="90%"}
 ```{r}
 #| warning: false
 #| echo: false
