@@ -91,22 +91,37 @@ eurovision_filt <- eurovision |>
 ## Host Country Vs. Non-Host Country
 
 ::: columns
-::: {.column width="30%"}
--   We want to compare the distributions of normalized points/rankings between host country participants and non-host country participants
-:::
-
-::: {.column width="90%"}
+::: {.column width="100%"}
 ```{r}
 #| warning: false
 #| echo: false
 
-# plot
-ggplot(eurovision_filt, aes(x = total_points, fill = from_host_country)) +
+eurovision_filt |>
+  filter(from_host_country == "Yes") |>
+  ggplot(aes(x = rank_pct, y = decade)) +
+  geom_density_ridges() +
+  labs(x = "Rank percentile",
+       y = "Decade",
+       title = "Distribution of home country participants' rank percentile by decade") +
+  theme_minimal()
+```
+:::
+:::
+
+## Host Country Vs. Non-Host Country
+
+::: columns
+::: {.column width="100%"}
+```{r}
+#| warning: false
+#| echo: false
+
+ggplot(eurovision_filt, aes(x = total_points_pct, fill = from_host_country)) +
   geom_density(alpha = 0.5, linewidth = 1.2) +
-  labs(title = "Distribution of Total Points by from_host_country", 
-       x = "Total Points", y = "Density") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"), 
-                    name = "From Host Country")
+  labs(title = "Distribution of total points percentage for host competitors",
+       x = "Total points percentage", y = "Density") +
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country?") +
+  theme_minimal()
 ```
 :::
 :::
