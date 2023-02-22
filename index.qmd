@@ -105,7 +105,7 @@ We first create a new binary variable called `from_host_country` for each observ
 
 Our first plot...
 
-Our second plot dives deeper into the subset of host country participants, first filtering for `from_host_country` only. We would like to measure how host country participants' final ranks have changed over time (ie. whether home country advantage is more prevalent now than in Eurovision's early years). We created numerous grouping variables of `year`, such as `decade` (which was highly imbalanced due to far more participating countries in recent years) and `era` (which was more balanced as we somewhat arbitrarily chose each time range). Ultimately, we elected to create and use a `binary_era` variable that indicated whether a given observation/contestant participated pre-2000 (includes 2000) or post-2000. The resulting ridge plot visualizes the distribution of rank percentiles among host country participants only, stratified by pre and post-2000 competitions. We chose to use this type of plot because its stacked/overlapped layout, along with the smoothened bins, allows for straightforward comparison of the pre and post-2000 distributions.
+Our second plot measures how both host country and non-host country participants' final ranks have changed over time (ie. whether home country advantage is more prevalent now than in Eurovision's early years). We created numerous grouping variables of `year`, such as `decade` (which was highly imbalanced due to far more participating countries in recent years) and `era` (which was more balanced as we somewhat arbitrarily chose each time range). Ultimately, we elected to create and use a `binary_era` variable that indicated whether a given observation/contestant participated pre-2000 (includes 2000) or post-2000. The resulting ridge plot visualizes the distribution of rank percentiles among host country participants and non-host country participants, stratified by pre and post-2000 competitions. We chose to use this type of plot because its stacked/overlapped layout, along with the smoothened bins, allows for straightforward comparison of the pre vs. post-2000 distributions, as well as the host country vs. non-host country distributions.
 
 ### Analysis
 
@@ -138,9 +138,9 @@ eurovision_filt |>
 #| label: q1-first-plot
 
 ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
-  geom_density(alpha = 0.5, linewidth = 1.2) +
-  labs(title = "Distribution of percentage of total points for host competitors",
-       x = "Percentage of total points", y = "Density") +
+  geom_density(alpha = 0.5) +
+  labs(title = "Distribution of proportion of total points for host competitors",
+       x = "Proportion of total points", y = "Density") +
   scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country?") +
   theme_minimal()
 ```
@@ -149,14 +149,14 @@ ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
 #| label: q1-second-plot
 
 eurovision_filt |>
-  filter(from_host_country == "Yes") |>
-  ggplot(aes(x = rank_pct, y = era_binary)) +
-  geom_density_ridges() +
+  ggplot(aes(x = rank_pct, y = era_binary, fill = from_host_country)) +
+  geom_density_ridges(alpha = 0.5) +
   labs(x = "Rank percentile",
        y = "Era",
-       title = "Distribution of home country participants' rank percentile",
+       title = "Rank percentiles of home country and non-home country participants",
        subtitle = "By era: pre-2000 vs. post-2000") +
-  theme_minimal()
+  theme_minimal() +
+  guides(fill = guide_legend(title = "Host country participant?"))
 ```
 
 ### Discussion
