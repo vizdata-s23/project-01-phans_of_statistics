@@ -105,7 +105,7 @@ We first create a new binary variable called `from_host_country` for each observ
 
 Our first plot...
 
-Our second plot dives deeper into the subset of host country participants, first filtering for `from_host_country` only. We would like to measure how host country participants' final ranks have changed over time (ie. whether home country advantage is more prevalent now than in Eurovision's early years). We created numerous grouping variables of `year`, such as `decade` (which was highly imbalanced due to far more participating countries in recent years) and `era` (which was more balanced as we somewhat arbitrarily chose each time range). Ultimately, we elected to create and use a `binary_era` variable that indicated whether a given observation/contestant participated pre-2000  (includes 2000) or post-2000. The resulting ridge plot visualizes the distribution of rank percentiles among host country participants only, stratified by pre and post-2000 competitions. We chose to use this type of plot because its stacked/overlapped layout, along with the smoothened bins, allows for straightforward comparison of the pre and post-2000 distributions.
+Our second plot dives deeper into the subset of host country participants, first filtering for `from_host_country` only. We would like to measure how host country participants' final ranks have changed over time (ie. whether home country advantage is more prevalent now than in Eurovision's early years). We created numerous grouping variables of `year`, such as `decade` (which was highly imbalanced due to far more participating countries in recent years) and `era` (which was more balanced as we somewhat arbitrarily chose each time range). Ultimately, we elected to create and use a `binary_era` variable that indicated whether a given observation/contestant participated pre-2000 (includes 2000) or post-2000. The resulting ridge plot visualizes the distribution of rank percentiles among host country participants only, stratified by pre and post-2000 competitions. We chose to use this type of plot because its stacked/overlapped layout, along with the smoothened bins, allows for straightforward comparison of the pre and post-2000 distributions.
 
 OLD (DELETE): We can use `total_points` or `rank` for each contestant as a measure of success and compare the distributions of these metrics between host country participants and non-host country participants in our second plot through a histogram faceted by whether `from_host_country`. A violin plot can also be used here for the second plot to make comparisons better, but we will again decide which to use upon visualization.
 
@@ -195,8 +195,8 @@ eurovision_filt |>
 
 ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
   geom_density(alpha = 0.5, linewidth = 1.2) +
-  labs(title = "Distribution of total points percentage for host competitors",
-       x = "Total points percentage", y = "Density") +
+  labs(title = "Distribution of percentage of total points for host competitors",
+       x = "Percentage of total points", y = "Density") +
   scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country?") +
   theme_minimal()
 ```
@@ -233,8 +233,6 @@ eurovision_filt |>
 
 (1-3 paragraphs): In the Discussion section, interpret the results of your analysis. Identify any trends revealed (or not revealed) by the plots. Speculate about why the data looks the way it does.
 
-
-
 ## Question 2: Performance Order and Success
 
 ### Introduction
@@ -261,9 +259,9 @@ ggplot(
   facet_wrap(~ era_binary, nrow = 1) +
   labs(
     color = "Appearance time",
-    y = "Total points percentage",
+    y = "Percentage of total points",
     x = NULL,
-    title = "Percentage of total points earned for contestants by appearance time",
+    title = "Percentage of total points earned by contestants by appearance time",
     subtitle = "By era"
   ) +
   theme_minimal() +
@@ -315,6 +313,8 @@ ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
 ```
 
 ### Discussion
+
+From our first graph,
 
 From our second graph, we see consistent results with the first one. For first, second, and third place finishers, we see an almost identical trend-line: a slight positive relationship between year and running order, suggesting that the top three finishers in Eurovision generally performed slightly later in the order than their predecessors from the previous years. Also, there is not a significant difference between the running order of first, second, and third place finishers. However, overall, the lines are so volatile that it suggests that running order is not a very strong factor in performance.
 

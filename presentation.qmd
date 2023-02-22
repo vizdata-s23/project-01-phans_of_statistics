@@ -151,7 +151,7 @@ eurovision_filt |>
 
 # Q2: Does the order in which contestants perform affect their success?
 
-## Total points percentages by appearance time
+## Weighted total points by appearance time
 
 ::: columns
 ::: {.column width="100%"}
