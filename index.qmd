@@ -87,7 +87,7 @@ eurovision |>
   ggplot(aes(x = year, y = n)) +
   geom_bar(stat = "identity") +
   labs(x = "Year",
-       y = "Number of participating countries", 
+       y = "Number of participating countries",
        title = "More countries have joined Eurovision over time") +
   theme_minimal()
 
@@ -99,9 +99,6 @@ eurovision_filt |>
 ```
 
 ```{r q1 first plot}
-
-#ggplot(eurovision_eras, aes(x = total_points, y = from_host_country)) +
-#  geom_density_ridges()
 
 eurovision_filt |>
   filter(from_host_country == "Yes") |>
@@ -172,9 +169,13 @@ ggplot(eurovision_filt, aes(x = total_points, fill = from_host_country)) +
 
 ### Introduction
 
-(1-2 paragraphs): Introduction to the question and what parts of the dataset are necessary to answer the question. Also discuss why you're interested in this question.
+Introduction (1-2 paragraphs): Introduction to the question and what parts of the dataset are necessary to answer the question. Also discuss why you\'re interested in this question.
+
+We are interested in this question because we wanted to see if voters were biased towards certain performances based on their performance order. In these types of competitions, there is always fear of lack of voter consistency due to recency bias or boredom as performances continue throughout the competition. By observing if there are significant trends in how voters vote by performance order, we can gain a better understanding of these biases and how they affect the success of contestants.
 
 ### Approach
+
+The first plot we use to answer this question is a group of boxplots comparing the adjusted percentages of points earned described in the first question (`total_points_pct`) by the appearance time of the song, defined as being in the first third ("beginning") , second third ("middle"), or last third ("end") of the performance by running order (`running_order_group`). These boxplots are then faceted by the `era` in which the competition occurred. A boxplot was chosen because it is easy to see inter-group statistics (such as percentiles) better, which makes comparing the general trends of total point percentage evident in the three different appearance groups more plausible. Furthermore, outliers for each of these groups are easily identifiable, and seeing which groups have more extreme outliers is possible with these boxplots. Finally, they are faceted by era because we wanted to observe temporal trends in total points percentage for the three appearance groups.
 
 ### Analysis
 
@@ -224,8 +225,6 @@ ggplot(euro_places, aes(x = year, y = running_order)) +
 ```
 
 ### Discussion
-
-From our first graph, we see that there does not appear to be a strong relationship between the order in which contestants perform and how many points they receive. For each decade, the trend-line is almost horizontal, especially in the earlier decades. While the later decades (especially the 2020s) appear to have a slightly positive relationship between running order and total points earned, the confidence interval is also very wide, suggesting that the relationship may not be as strong as the trend-line suggests.The trend-lines also gradually shift upwards vertically, which makes sense as Eurovision has expanded over the decades, including more participants and more countries with more points available to be earned.
 
 From our second graph, we see consistent results with the first one. For first, second, and third place finishers, we see an almost identical trend-line: a slight positive relationship between year and running order, suggesting that the top three finishers in Eurovision generally performed slightly later in the order than their predecessors from the previous years. Also, there is not a significant difference between the running order of first, second, and third place finishers. However, overall, the lines are so volatile that it suggests that running order is not a very strong factor in performance.
 
