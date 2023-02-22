@@ -8,8 +8,10 @@ title-slide-attributes:
   data-slide-number: none
 format: revealjs
 editor: visual
-execute:
+execute: 
   echo: false
+  warning: false
+  message: false
 ---
 
 ```{r}
@@ -50,20 +52,37 @@ eurovision <- read_csv("data/eurovision.csv")
 
 eurovision_filt <- eurovision |>
   filter(year != "2020") |>
-  mutate(era = case_when(year %in% 1956:1979 ~ "1956-1979",
-                            year %in% 1980:1999 ~ "1980-1999",
-                            year %in% 2000:2010 ~ "2000-2010",
-                            year %in% 2011:2022 ~ "2011-2022")) |>
-  mutate(from_host_country = case_when(host_country == artist_country ~ "Yes",
-                                       host_country != artist_country ~ "No")) |>
-  mutate(decade = case_when(year %in% 1950:1959 ~ "1950s",
-                            year %in% 1960:1969 ~ "1960s",
-                            year %in% 1970:1979 ~ "1970s",
-                            year %in% 1980:1989 ~ "1980s",
-                            year %in% 1990:1999 ~ "1990s", 
-                            year %in% 2000:2009 ~ "2000s", 
-                            year %in% 2010:2019 ~ "2010s", 
-                            year %in% 2020:2022 ~ "2020s")) |>
+  mutate(
+    era = case_when(
+      year %in% 1956:1979 ~ "1956-1979",
+      year %in% 1980:1999 ~ "1980-1999",
+      year %in% 2000:2010 ~ "2000-2010",
+      year %in% 2011:2022 ~ "2011-2022"
+    ) 
+  ) |>
+  mutate(
+    era_binary = case_when(
+      year %in% 1956:2000 ~ "Pre-2000",
+      year %in% 2001:2022 ~ "Post-2000"
+    )
+  ) |>
+  mutate(
+    from_host_country = case_when(
+      host_country == artist_country ~ "Yes",
+      host_country != artist_country ~ "No"
+    )
+  ) |>
+  mutate(
+    decade = case_when(
+      year %in% 1950:1959 ~ "1950s",
+      year %in% 1960:1969 ~ "1960s",
+      year %in% 1970:1979 ~ "1970s",
+      year %in% 1980:1989 ~ "1980s",
+      year %in% 1990:1999 ~ "1990s",
+      year %in% 2000:2009 ~ "2000s",
+      year %in% 2010:2022 ~ "2010s-present"
+    )
+  ) |>
   group_by(year) |>
   mutate(num_ranks = max(rank)) |>
   ungroup() |>
@@ -72,81 +91,85 @@ eurovision_filt <- eurovision |>
   mutate(num_participants = n()) |>
   ungroup() |>
   group_by(year) |>
-  mutate(unweighted_pct_total_points = (total_points / sum(total_points))) |>
+  mutate(unweighted_prop_total_points = (total_points / sum(total_points))) |>
   ungroup() |>
-  mutate(total_points_pct = (num_participants / 60) * unweighted_pct_total_points) |>
+  mutate(total_points_prop = (num_participants / 60) * unweighted_prop_total_points) |>
   group_by(year) |>
-  mutate(running_order_group = case_when(
-    running_order / max(running_order) > 2/3 ~ "End", 
-    running_order / max(running_order) > 1/3 ~ "Middle", 
-    running_order / max(running_order) > 0 ~ "Beginning")) |>
-  mutate(running_order_group = factor(running_order_group, 
+  mutate(
+    running_order_group = case_when(
+      running_order / max(running_order) > 2 / 3 ~ "End",
+      running_order / max(running_order) > 1 / 3 ~ "Middle",
+      running_order / max(running_order) > 0 ~ "Beginning"
+    )
+  ) |>
+  mutate(running_order_group = factor(running_order_group,
                                       levels = c("Beginning", "Middle", "End")))
 ```
 
 ## Introduction to the Data
 
-# Q1: Is there a home country advantage in Eurovision?
-
-## Host Country Vs. Non-Host Country
+## Q1: Is there a home country advantage in Eurovision?
 
 ::: columns
 ::: {.column width="100%"}
 ```{r}
-#| warning: false
+#| label: q1 first plot
 #| echo: false
 
-eurovision_filt |>
-  filter(from_host_country == "Yes") |>
-  ggplot(aes(x = rank_pct, y = decade)) +
-  geom_density_ridges() +
-  labs(x = "Rank percentile",
-       y = "Decade",
-       title = "Distribution of home country participants' rank percentile by decade") +
-  theme_minimal()
-```
-:::
-:::
-
-## Host Country Vs. Non-Host Country
-
-::: columns
-::: {.column width="100%"}
-```{r}
-#| warning: false
-#| echo: false
-
-ggplot(eurovision_filt, aes(x = total_points_pct, fill = from_host_country)) +
+ggplot(eurovision_filt,
+       aes(x = total_points_prop, fill = from_host_country)) +
   geom_density(alpha = 0.5, linewidth = 1.2) +
-  labs(title = "Distribution of total points percentage for host competitors",
-       x = "Total points percentage", y = "Density") +
+  labs(title = "Distribution of percentage of total points for host competitors",
+       x = "Percentage of total points", y = "Density") +
   scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country?") +
   theme_minimal()
 ```
 :::
 :::
 
-# Q2: Does the order in which contestants perform affect their success?
-
-## Total points percentages by appearance time
+## Host Country Contestants: A Centennial Turning Point?
 
 ::: columns
 ::: {.column width="100%"}
 ```{r}
-#| warning: false
+#| label: q1 second plot
+#| echo: false
+
+eurovision_filt |>
+  filter(from_host_country == "Yes") |>
+  ggplot(aes(x = rank_pct, y = era_binary)) +
+  geom_density_ridges() +
+  labs(
+    x = "Rank percentile",
+    y = "Era",
+    title = "Distribution of home country participants' rank percentile",
+    subtitle = "By era: pre-2000 vs. post-2000"
+  ) +
+  theme_minimal()
+```
+:::
+:::
+
+## Q2: Does the order in which contestants perform affect their success?
+
+::: columns
+::: {.column width="100%"}
+```{r}
+#| label: q2 first plot
 #| echo: false
 
 ggplot(
   eurovision_filt,
-  aes(x = running_order_group, y = total_points_pct,
+  aes(x = running_order_group, y = total_points_prop,
       color = running_order_group)
 ) +
   geom_violin() +
+  facet_wrap( ~ era_binary, nrow = 1) +
   labs(
     color = "Appearance time",
-    y = "Total points percentage",
+    y = "Percentage of total points",
     x = NULL,
-    title = "Percentage of total points earned for contestants by appearance time",
+    title = "Percentage of total points earned by contestants by appearance time",
     subtitle = "By era"
   ) +
   theme_minimal() +
@@ -156,16 +179,16 @@ ggplot(
 :::
 :::
 
-## Order of performance over the years
+## Differing trends in performance order over time
 
-```{r q2 second plot data-wrangling}
-#| label: q2-wrangling
+```{r}
+#| label: q2 data wrangling
 #| include: false
 
 euro_places <- eurovision_filt |>
-  drop_na(total_points_pct, running_order) |>
+  drop_na(total_points_prop, running_order) |>
   group_by(event) |>
-  arrange(desc(total_points_pct), .by_group = TRUE) |>
+  arrange(desc(total_points_prop), .by_group = TRUE) |>
   mutate(group_row_num = row_number(event)) |>
   mutate(top3 = case_when(group_row_num <= 3 ~ "First Three",
                           group_row_num > 3 ~ "Other")) |>
@@ -177,11 +200,10 @@ euro_places <- eurovision_filt |>
 ::: columns
 ::: {.column width="100%"}
 ```{r}
-#| warning: false
+#| label: q2 second plot
 #| echo: false
-
 ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
-  geom_line(width = 0.5) +
+  geom_line() +
   geom_point(size = 1) +
   labs(
     title = "Performance order in Eurovision over time",
