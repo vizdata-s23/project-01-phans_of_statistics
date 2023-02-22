@@ -13,6 +13,7 @@ execute:
 ```{r}
 #| label: setup
 #| include: false
+
 library(dplyr)
 library(ggplot2)
 library(tidyverse)
@@ -23,6 +24,7 @@ eurovision <- read_csv("data/eurovision.csv")
 ```{r}
 #| label: master data frame
 #| include: false
+
 eurovision_filt <- eurovision |>
   filter(year != "2020") |>
   mutate(
@@ -87,7 +89,7 @@ eurovision_filt <- eurovision |>
 
 ## Introduction
 
-Eurovision is an international public song performance competition between European countries every year. Each country submits a song that is to be performed live to a centralized committee that plays the song over a common broadcast, and each country then votes on the other countries' songs. The competition began in 1956, and has occurred every year with the exception of 2020 due to the COVID pandemic. As of 2022, at least 52 countries have participated at least once, with Ireland being the recipient of the most winners. The competition has cemented itself as a periodic staple for each country to present a culturally significant piece on an international stage, and its influence has spread outside of Europe in recent years.
+Eurovision is an international public song performance competition between European countries every year. Each country submits a song that is to be performed live to a centralized committee that plays the song over a common broadcast, and each country then votes on the other countries' songs. The competition began in 1956, and has occurred every year with the exception of 2020 due to the COVID pandemic. As of 2022, at least 52 countries have participated at least once, with Ireland being the recipient of the most winners . The competition has cemented itself as a periodic staple for each country to present a culturally significant piece on an international stage, and its influence has spread outside of Europe in recent years.
 
 The dataset, contained within eurovision.csv, consists of every song performed in Eurovision history, from 1956 to 2022. This data was collected from the [Eurovision Song Contest website](https://eurovision.tv/), and was found as a [TidyTuesday dataset](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-05-17/readme.md) on GitHub. The dataset consists of `r nrow(eurovision)` observations and `r ncol(eurovision)` variables, with each observation being a different song entered for the competition. The main variables used in this visual analysis are `year` (year of competition), `host_country` (where the competition was held), `artist_country` (the country the artist represented), `running_order` (the order in which the song was performed), `total_points` (total points earned in the competition), `rank` (rank of the song in the competition), and `winner` (a binary variable indicating whether the song won or did not win the competition).
 
@@ -255,6 +257,7 @@ ggplot(
       color = running_order_group)
 ) +
   geom_violin() +
+  facet_wrap(~ era_binary, nrow = 1) +
   labs(
     color = "Appearance time",
     y = "Total points percentage",
