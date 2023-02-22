@@ -126,57 +126,57 @@ eurovision_filt |>
 ```{r q1 second plot}
 # Plot distribution of total points by from_host_country
 
-ggplot(eurovision_filt,
-       aes(x = total_points_pct, fill = from_host_country)) +
-  geom_histogram(binwidth = 10,
-                 alpha = 0.5,
-                 position = "identity") +
-  labs(title = "Distribution of total points percentage for host competitors",
-       x = "Total points percentage", y = "Count") +
-  facet_wrap( ~ from_host_country) +
-  theme_minimal()
-
-# Plot distribution of rank by from_host_country
-ggplot(eurovision_filt, aes(x = rank_pct, fill = from_host_country)) +
-  geom_histogram(binwidth = 5,
-                 alpha = 0.5,
-                 position = "identity") +
-  labs(title = "Distribution of rank percentile for host competitors",
-       x = "Rank percentile", y = "Count") +
-  facet_wrap( ~ from_host_country) +
-  theme_minimal()
-
-#violin plot
-ggplot(
-  eurovision_filt,
-  aes(x = from_host_country, y = total_points_pct,
-      fill = from_host_country)
-) +
-  geom_violin(trim = FALSE,
-              scale = "count",
-              alpha = 0.7) +
-  geom_boxplot(width = 0.2,
-               fill = "white",
-               outlier.shape = NA) +
-  labs(title = "Distribution of total points percentage for host competitors",
-       x = "From Host Country?", y = "Total points percentage") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"),
-                    name = "From Host Country?") +
-  theme_minimal() +
-  theme(legend.position = "top",
-        axis.title.y = element_text(margin = margin(r = 10))) +
-  coord_flip()
-
-#the 3 above plots are very skewed bc of more observations in "no" than "yes" for from_home_country; so instead we do:
-
-ggplot(eurovision_filt,
-       aes(x = total_points_pct, fill = from_host_country)) +
-  geom_density(alpha = 0.5, size = 1.2) +
-  labs(title = "Distribution of total points percentage for host competitors",
-       x = "Total points percentage", y = "Density") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"),
-                    name = "From Host Country?") +
-  theme_minimal()
+# ggplot(eurovision_filt,
+#        aes(x = total_points_pct, fill = from_host_country)) +
+#   geom_histogram(binwidth = 10,
+#                  alpha = 0.5,
+#                  position = "identity") +
+#   labs(title = "Distribution of total points percentage for host competitors",
+#        x = "Total points percentage", y = "Count") +
+#   facet_wrap( ~ from_host_country) +
+#   theme_minimal()
+# 
+# # Plot distribution of rank by from_host_country
+# ggplot(eurovision_filt, aes(x = rank_pct, fill = from_host_country)) +
+#   geom_histogram(binwidth = 5,
+#                  alpha = 0.5,
+#                  position = "identity") +
+#   labs(title = "Distribution of rank percentile for host competitors",
+#        x = "Rank percentile", y = "Count") +
+#   facet_wrap( ~ from_host_country) +
+#   theme_minimal()
+# 
+# #violin plot
+# ggplot(
+#   eurovision_filt,
+#   aes(x = from_host_country, y = total_points_pct,
+#       fill = from_host_country)
+# ) +
+#   geom_violin(trim = FALSE,
+#               scale = "count",
+#               alpha = 0.7) +
+#   geom_boxplot(width = 0.2,
+#                fill = "white",
+#                outlier.shape = NA) +
+#   labs(title = "Distribution of total points percentage for host competitors",
+#        x = "From Host Country?", y = "Total points percentage") +
+#   scale_fill_manual(values = c("#f47b6e", "#6baed6"),
+#                     name = "From Host Country?") +
+#   theme_minimal() +
+#   theme(legend.position = "top",
+#         axis.title.y = element_text(margin = margin(r = 10))) +
+#   coord_flip()
+# 
+# #the 3 above plots are very skewed bc of more observations in "no" than "yes" for from_home_country; so instead we do:
+# 
+# ggplot(eurovision_filt,
+#        aes(x = total_points_pct, fill = from_host_country)) +
+#   geom_density(alpha = 0.5, size = 1.2) +
+#   labs(title = "Distribution of total points percentage for host competitors",
+#        x = "Total points percentage", y = "Density") +
+#   scale_fill_manual(values = c("#f47b6e", "#6baed6"),
+#                     name = "From Host Country?") +
+#   theme_minimal()
 
 ggplot(eurovision_filt, aes(x = total_points_pct, fill = from_host_country)) +
   geom_density(alpha = 0.5, linewidth = 1.2) +
