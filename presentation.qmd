@@ -117,23 +117,25 @@ ggplot(eurovision_filt, aes(x = total_points, fill = from_host_country)) +
 
 ::: columns
 ::: {.column width="100%"}
-:::
-::: {.column width="100%"}
 ```{r}
 #| warning: false
 #| echo: false
 
-ggplot(eurovision_filt, aes(x = running_order_group, y = total_points_pct, 
-                            color = running_order_group)) +
-  geom_boxplot() +
-  facet_wrap(~ era) +
-  labs(color = "Appearance time", 
-       y = "Total points percentage", 
-       x = NULL, 
-       title = "Percentage of total points earned for contestants by appearance time", 
-       subtitle = "By era") +
+ggplot(
+  eurovision_filt,
+  aes(x = running_order_group, y = total_points_pct,
+      color = running_order_group)
+) +
+  geom_violin() +
+  labs(
+    color = "Appearance time",
+    y = "Total points percentage",
+    x = NULL,
+    title = "Percentage of total points earned for contestants by appearance time",
+    subtitle = "By era"
+  ) +
   theme_minimal() +
-  theme(axis.text.x = element_blank(), 
+  theme(axis.text.x = element_blank(),
         strip.background = element_rect(fill = "grey"))
 ```
 :::
