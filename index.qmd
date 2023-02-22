@@ -178,7 +178,7 @@ ggplot(eurovision_filt,
                     name = "From Host Country?") +
   theme_minimal()
 
-ggplot(eurovision_filt, aes(x = total_points, fill = from_host_country)) +
+ggplot(eurovision_filt, aes(x = total_points_pct, fill = from_host_country)) +
   geom_density(alpha = 0.5, linewidth = 1.2) +
   labs(title = "Distribution of total points percentage for host competitors",
        x = "Total points percentage", y = "Density") +
@@ -210,8 +210,7 @@ ggplot(
   aes(x = running_order_group, y = total_points_pct,
       color = running_order_group)
 ) +
-  geom_boxplot() +
-  facet_wrap( ~ era) +
+  geom_violin() +
   labs(
     color = "Appearance time",
     y = "Total points percentage",
@@ -225,6 +224,7 @@ ggplot(
 ```
 
 ```{r q2 second plot data-wrangling}
+
 euro_places <- eurovision_filt |>
   drop_na(total_points_pct, running_order) |>
   group_by(event) |>
