@@ -118,8 +118,10 @@ eurovision_filt <- eurovision |>
 
 ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
   geom_density(alpha = 0.5) +
-  labs(title = "Distribution of proportion of total points for host competitors",
-       x = "Proportion of total points", y = "Density") +
+  labs(title = "Distribution of proportion of total available points",
+       subtitle = "Host country vs. 'away' participants",
+       x = "Proportion of total available points",
+       y = "Density") +
   scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?") +
   theme_minimal()
 ```

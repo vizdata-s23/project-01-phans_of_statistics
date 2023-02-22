@@ -139,8 +139,10 @@ eurovision_filt |>
 
 ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
   geom_density(alpha = 0.5) +
-  labs(title = "Distribution of proportion of total points for host competitors",
-       x = "Proportion of total points", y = "Density") +
+  labs(title = "Distribution of proportion of total available points",
+       subtitle = "Host country vs. 'away' participants",
+       x = "Proportion of total available points",
+       y = "Density") +
   scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?") +
   theme_minimal()
 ```
@@ -163,7 +165,9 @@ eurovision_filt |>
 
 (1-3 paragraphs): In the Discussion section, interpret the results of your analysis. Identify any trends revealed (or not revealed) by the plots. Speculate about why the data looks the way it does.
 
-We observe a unimodal distribution of pre-2000 host country participants' rank percentiles, while a more bimodal distribution of that of post-2000 host country participants. While the rightmost peak of the post-2000 distribution is fairly aligned with the peak of the pre-2000 distribution - right around the 75th percentile - the leftmost peak occurs near the 10th percentile. Thus, the pre-2000 distribution has a much stronger left skew, leading us to conclude that home country advantage was more prevalent in 20th century Eurovisions than 21st century Eurovisions. One potential reason for this falloff could be the wave of digitization and media. More accessible forms of watching the competition, such as television, streaming, and online replays, might disincentive in-person attendance, even for fans residing in the host country.
+In the second plot, we first look at the two non-host country distributions and see little skew or peak in both, with "away" country participants tending to perform slightly better post-2000. We do not see substantial evidence to draw any conclusions about lack of home country advantage impacting performance over time.
+
+Honing in on solely host country participants, we observe a unimodal distribution of pre-2000 rank percentiles, while a more bimodal distribution post-2000 rank percentiles. While the rightmost peak of the post-2000 distribution is fairly aligned with the peak of the pre-2000 distribution - right around the 75th percentile - the leftmost peak occurs near the 10th percentile. Thus, the pre-2000 distribution has a much stronger left skew, leading us to conclude that home country advantage was more prevalent in 20th century Eurovisions than 21st century Eurovisions. One potential reason for this falloff could be the wave of digitization and media. More accessible forms of watching the competition, such as television, streaming, and online replays, might disincentive in-person attendance, even for fans residing in the host country.
 
 ## Question 2: Performance Order and Success
 
