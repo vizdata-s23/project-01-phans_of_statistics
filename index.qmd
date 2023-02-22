@@ -13,6 +13,7 @@ execute:
 ```{r}
 #| label: setup
 #| include: false
+
 library(dplyr)
 library(ggplot2)
 library(tidyverse)
@@ -23,6 +24,7 @@ eurovision <- read_csv("data/eurovision.csv")
 ```{r}
 #| label: master data frame
 #| include: false
+
 eurovision_filt <- eurovision |>
   filter(year != "2020") |>
   mutate(
@@ -250,6 +252,7 @@ ggplot(
       color = running_order_group)
 ) +
   geom_violin() +
+  facet_wrap(~ era_binary, nrow = 1) +
   labs(
     color = "Appearance time",
     y = "Total points percentage",
