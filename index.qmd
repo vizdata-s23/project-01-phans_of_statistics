@@ -31,6 +31,12 @@ eurovision_filt <- eurovision |>
       year %in% 1980:1999 ~ "1980-1999",
       year %in% 2000:2010 ~ "2000-2010",
       year %in% 2011:2022 ~ "2011-2022"
+    ) 
+  ) |>
+  mutate(
+    era_binary = case_when(
+      year %in% 1956:1999 ~ "Pre-2000",
+      year %in% 2000:2022 ~ "Post-2000"
     )
   ) |>
   mutate(
@@ -47,8 +53,7 @@ eurovision_filt <- eurovision |>
       year %in% 1980:1989 ~ "1980s",
       year %in% 1990:1999 ~ "1990s",
       year %in% 2000:2009 ~ "2000s",
-      year %in% 2010:2019 ~ "2010s",
-      year %in% 2020:2022 ~ "2020s"
+      year %in% 2010:2022 ~ "2010s-present"
     )
   ) |>
   group_by(year) |>
@@ -102,7 +107,7 @@ We used our first plot as a histogram of `total_points` or final `rank` of host 
 
 ```{r}
 #| label: q1-data-wrangling
-#| include: false
+#| echo: false
 
 eurovision |>
   count(year) |>
@@ -118,6 +123,10 @@ eurovision_filt |>
 
 eurovision_filt |>
   count(from_host_country, rank, sort = TRUE)
+
+eurovision_filt |>
+  filter(from_host_country == "Yes") |>
+  filter(winner == "TRUE")
 ```
 
 ```{r}
@@ -130,6 +139,16 @@ eurovision_filt |>
   labs(x = "Rank percentile",
        y = "Decade",
        title = "Distribution of home country participants' rank percentile by decade") +
+  theme_minimal()
+
+eurovision_filt |>
+  filter(from_host_country == "Yes") |>
+  ggplot(aes(x = rank_pct, y = era_binary)) +
+  geom_density_ridges() +
+  labs(x = "Rank percentile",
+       y = "Era",
+       title = "Distribution of home country participants' rank percentile",
+       subtitle = "By era: pre-2000 vs. post-2000") +
   theme_minimal()
 ```
 
@@ -240,6 +259,7 @@ ggplot(
 
 ```{r}
 #| label: q2-data-wrangling
+#| include: false
 
 euro_places <- eurovision_filt |>
   drop_na(total_points_pct, running_order) |>
