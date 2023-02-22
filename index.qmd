@@ -204,7 +204,7 @@ ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
 
 ```{r}
 #| label: q1-second-plot
-#| 
+
 eurovision_filt |>
   filter(from_host_country == "Yes") |>
   ggplot(aes(x = rank_pct, y = era_binary)) +
