@@ -8,5 +8,5 @@ This project was developed by **PHANs of Statistics** For [STA/ISS 313: Advanced
 
 -   Team member 1: Federico Arboleda, Class of 2024, Statistics major
 -   Team member 2: Chandler Naylon, Class of 2023, Statistics major
--   Team member 3: One sentence description of Team member 3 (e.g., year, major, etc.).
--   Team member 4: One sentence description of Team member 4 (e.g., year, major, etc.).
+-   Team member 3: Aryan Poonacha, Class of 2023, Data Science major
+-   Team member 4: Ryan Hu
