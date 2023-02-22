@@ -108,9 +108,7 @@ eurovision_filt <- eurovision |>
 
 ## Introduction to the Data
 
-# Q1: Is there a home country advantage in Eurovision?
-
-## Host Country vs. Non-Host Country Contestants
+## Q1: Is there a home country advantage in Eurovision?
 
 ::: columns
 ::: {.column width="100%"}
@@ -118,10 +116,11 @@ eurovision_filt <- eurovision |>
 #| label: q1 first plot
 #| echo: false
 
-ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
+ggplot(eurovision_filt,
+       aes(x = total_points_prop, fill = from_host_country)) +
   geom_density(alpha = 0.5, linewidth = 1.2) +
-  labs(title = "Distribution of total points percentage for host competitors",
-       x = "Total points percentage", y = "Density") +
+  labs(title = "Distribution of percentage of total points for host competitors",
+       x = "Percentage of total points", y = "Density") +
   scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country?") +
   theme_minimal()
 ```
@@ -140,18 +139,18 @@ eurovision_filt |>
   filter(from_host_country == "Yes") |>
   ggplot(aes(x = rank_pct, y = era_binary)) +
   geom_density_ridges() +
-  labs(x = "Rank percentile",
-       y = "Era",
-       title = "Distribution of home country participants' rank percentile",
-       subtitle = "By era: pre-2000 vs. post-2000") +
+  labs(
+    x = "Rank percentile",
+    y = "Era",
+    title = "Distribution of home country participants' rank percentile",
+    subtitle = "By era: pre-2000 vs. post-2000"
+  ) +
   theme_minimal()
 ```
 :::
 :::
 
-# Q2: Does the order in which contestants perform affect their success?
-
-## Weighted total points by appearance time
+## Q2: Does the order in which contestants perform affect their success?
 
 ::: columns
 ::: {.column width="100%"}
@@ -165,11 +164,12 @@ ggplot(
       color = running_order_group)
 ) +
   geom_violin() +
+  facet_wrap( ~ era_binary, nrow = 1) +
   labs(
     color = "Appearance time",
-    y = "Total points percentage",
+    y = "Percentage of total points",
     x = NULL,
-    title = "Percentage of total points earned for contestants by appearance time",
+    title = "Percentage of total points earned by contestants by appearance time",
     subtitle = "By era"
   ) +
   theme_minimal() +
@@ -179,7 +179,7 @@ ggplot(
 :::
 :::
 
-## Order of performance over the years
+## Differing trends in performance order over time
 
 ```{r}
 #| label: q2 data wrangling
@@ -202,7 +202,6 @@ euro_places <- eurovision_filt |>
 ```{r}
 #| label: q2 second plot
 #| echo: false
-
 ggplot(euro_places, aes(x = year, y = top3_final, color = top3)) +
   geom_line() +
   geom_point(size = 1) +
