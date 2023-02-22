@@ -129,11 +129,10 @@ ggplot(plot2data, aes(x = from_host_country, y = total_points, fill = from_host_
   theme(legend.position = "top", axis.title.y = element_text(margin = margin(r = 10))) +
   coord_flip()
 
-
 #the 3 above plots are very skewed bc of more observations in "no" than "yes" for from_home_country; so instead we do:
 
 ggplot(plot2data, aes(x = total_points, fill = from_host_country)) +
-  geom_density(alpha = 0.5, size = 1.2) +
+  geom_density(alpha = 0.5, linewidth = 1.2) +
   labs(title = "Distribution of Total Points by from_host_country", x = "Total Points", y = "Density") +
   scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country") +
   theme_minimal()
