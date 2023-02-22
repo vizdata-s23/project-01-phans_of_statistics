@@ -105,7 +105,7 @@ We first create a new binary variable called `from_host_country` for each observ
 
 Our first plot is a density plot comparing the distributions of the normalized points between the 2 groups: one where it's from the host country and one where it isn't. The thought process behind making the density plot was to compare the distributions of (normalized) total points earned by contestants from host and non-host countries, while accounting for the difference in size of the two groups as the "no" group contains many more observations. The approach used was to create a density plot for each group, which shows the probability density function of the distribution of normalized total points for each group. By plotting the densities, we can compare the shapes of the distributions, rather than the raw counts or proportions of each group. The intent with this visualization is to discover whether there were any noticeable differences in the shape or center of the distributions between the two groups, and to communicate those differences in a clear and visually appealing way. The use of color and transparency in the plot makes it easy to distinguish between the two groups, and the minimal theme reduces visual clutter, allowing the viewer to focus on the shapes of the distributions.
 
-Our second plot dives deeper into the subset of host country participants, first filtering for `from_host_country` only. We would like to measure how host country participants' final ranks have changed over time (ie. whether home country advantage is more prevalent now than in Eurovision's early years). We created numerous grouping variables of `year`, such as `decade` (which was highly imbalanced due to far more participating countries in recent years) and `era` (which was more balanced as we somewhat arbitrarily chose each time range). Ultimately, we elected to create and use a `binary_era` variable that indicated whether a given observation/contestant participated pre-2000 (includes 2000) or post-2000. The resulting ridge plot visualizes the distribution of rank percentiles among host country participants only, stratified by pre and post-2000 competitions. We chose to use this type of plot because its stacked/overlapped layout, along with the smoothened bins, allows for straightforward comparison of the pre and post-2000 distributions.
+Our second plot measures how both host country and non-host country participants' final ranks have changed over time (ie. whether home country advantage is more prevalent now than in Eurovision's early years). We created numerous grouping variables of `year`, such as `decade` (which was highly imbalanced due to far more participating countries in recent years) and `era` (which was more balanced as we somewhat arbitrarily chose each time range). Ultimately, we elected to create and use a `binary_era` variable that indicated whether a given observation/contestant participated pre-2000 (includes 2000) or post-2000. The resulting ridge plot visualizes the distribution of rank percentiles among host country participants and non-host country participants, stratified by pre and post-2000 competitions. We chose to use this type of plot because its stacked/overlapped layout, along with the smoothened bins, allows for straightforward comparison of the pre vs. post-2000 distributions, as well as the host country vs. non-host country distributions.
 
 ### Analysis
 
@@ -138,10 +138,12 @@ eurovision_filt |>
 #| label: q1-first-plot
 
 ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
-  geom_density(alpha = 0.5, linewidth = 1.2) +
-  labs(title = "Distribution of percentage of total points for host competitors",
-       x = "Percentage of total points", y = "Density") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country?") +
+  geom_density(alpha = 0.5) +
+  labs(title = "Distribution of proportion of total available points",
+       subtitle = "Host country vs. 'away' participants",
+       x = "Proportion of total available points",
+       y = "Density") +
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?") +
   theme_minimal()
 ```
 
@@ -149,14 +151,14 @@ ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
 #| label: q1-second-plot
 
 eurovision_filt |>
-  filter(from_host_country == "Yes") |>
-  ggplot(aes(x = rank_pct, y = era_binary)) +
-  geom_density_ridges() +
+  ggplot(aes(x = rank_pct, y = era_binary, fill = from_host_country)) +
+  geom_density_ridges(alpha = 0.5) +
   labs(x = "Rank percentile",
        y = "Era",
-       title = "Distribution of home country participants' rank percentile",
+       title = "Rank percentiles of home country and non-home country participants",
        subtitle = "By era: pre-2000 vs. post-2000") +
-  theme_minimal()
+  theme_minimal() +
+  guides(fill = guide_legend(title = "Host country participant?"))
 ```
 
 ### Discussion
@@ -164,7 +166,9 @@ eurovision_filt |>
 (1-3 paragraphs): In the Discussion section, interpret the results of your analysis. Identify any trends revealed (or not revealed) by the plots. Speculate about why the data looks the way it does.
 The resulting density plot shows that there are noticeable differences in the distributions of total points earned by contestants from host and non-host countries. The "no" group, or non-host country contestants, has a left-skewed unimodal distribution, with the majority of countries having a lower percentage of the total points. This suggests that non-host countries may have a disadvantage in the Eurovision competition, perhaps due to factors such as cultural differences or language barriers. On the other hand, the "yes" group, or host country contestants, has a centrally skewed unimodal distribution, with a lower peak than the "no" group, but in general having a higher percentage of the total points than the "no" group. This suggests that host countries may have an advantage in the competition, perhaps due to factors such as familiarity or the home crowd advantage. It's important to note that these are just preliminary observations and that further statistical analysis is necessary to determine whether these differences are significant. However, the density plot provides a clear and visually appealing way to compare the distributions of total points earned by host and non-host countries and to identify any interesting patterns or differences between the two groups.
 
-We observe a unimodal distribution of pre-2000 host country participants' rank percentiles, while a more bimodal distribution of that of post-2000 host country participants. While the rightmost peak of the post-2000 distribution is fairly aligned with the peak of the pre-2000 distribution - right around the 75th percentile - the leftmost peak occurs near the 10th percentile. Thus, the pre-2000 distribution has a much stronger left skew, leading us to conclude that home country advantage was more prevalent in 20th century Eurovisions than 21st century Eurovisions. One potential reason for this falloff could be the wave of digitization and media. More accessible forms of watching the competition, such as television, streaming, and online replays, might disincentive in-person attendance, even for fans residing in the host country.
+In the second plot, we first look at the two non-host country distributions and see little skew or peak in both, with "away" country participants tending to perform slightly better post-2000. We do not see substantial evidence to draw any conclusions about lack of home country advantage impacting performance over time.
+
+Honing in on solely host country participants, we observe a unimodal distribution of pre-2000 rank percentiles, while a more bimodal distribution post-2000 rank percentiles. While the rightmost peak of the post-2000 distribution is fairly aligned with the peak of the pre-2000 distribution - right around the 75th percentile - the leftmost peak occurs near the 10th percentile. Thus, the pre-2000 distribution has a much stronger left skew, leading us to conclude that home country advantage was more prevalent in 20th century Eurovisions than 21st century Eurovisions. One potential reason for this falloff could be the wave of digitization and media. More accessible forms of watching the competition, such as television, streaming, and online replays, might disincentive in-person attendance, even for fans residing in the host country.
 
 ## Question 2: Performance Order and Success
 
@@ -174,9 +178,9 @@ Our second question asks whether the order in which contestants perform affect t
 
 ### Approach
 
-The first plot we use to answer this question is a group of boxplots comparing the adjusted percentages of points earned described in the first question (`total_points_prop`) by the appearance time of the song, defined as being in the first third ("beginning") , second third ("middle"), or last third ("end") of the performance by running order (`running_order_group`). These boxplots are then faceted by the `era` in which the competition occurred (as previously mentioned, we manually chose these eras to best balance out the number of observations in each era). A boxplot was chosen because it is easy to see inter-group statistics (such as percentiles) better, which makes comparing the general trends of total point percentage evident in the three different appearance groups more plausible. Furthermore, outliers for each of these groups are easily identifiable, and seeing which groups have more extreme outliers is possible with these boxplots. Finally, they are faceted by era because we wanted to observe temporal trends in total points percentage for the three appearance groups.
+The first plot we use to answer this question is a group of violin comparing the adjusted percentages of points earned described in the first question (`total_points_prop`) by the appearance time of the song in the competition, defined as being in the first third ("beginning") , second third ("middle"), or last third ("end") of the performance by running order (`running_order_group`). These violin plots are then faceted by the `era_binary` variable (pre-2000 or post-2000), in which the competition occurred (as previously mentioned, we manually chose these eras to best balance out the number of observations in each era). A violin plot was chosen because this made it easier to observe the entire distribution of total points proportions for each of the groups, especially seeing peaks in the distributions. Furthermore, the skew of the distributions can be analyzed easily with violin plots, which can highlight which groups have more extreme outliers. Finally, the violin plots are faceted by era because we wanted to observe temporal trends in total points percentage for the three appearance groups.
 
-The second plot is a line graph with year on the x-axis and the average order of performance on the y-axis, colored by whether the participants placed in the top three or not. A line graph was chosen because it is easy to see the trends of performance order temporally, and overlaying the lines allows for easy comparison. In order to prevent overcluttering and allow for easier analysis, we decided to plot the average order of performance rather than a scatter plot. For the same reason, we simplified the groupings to top three and not top three as there was not a significant difference in performance order across the top three, but the difference became more evidence as we included more places.
+The second plot is a line graph with `year` on the x-axis and the average order of performance on the y-axis, colored by whether the participants placed in the top three or not (`top3`). A line graph was chosen because it is easy to see the trends of performance order temporally, and overlaying the lines allows for easy comparison. In order to prevent overcluttering and allow for easier analysis, we decided to plot the average order of performance rather than a scatter plot. For the same reason, we simplified the groupings to top three and not top three as there was not a significant difference in performance order across the top three, but the difference became more evidence as we included more places.
 
 ### Analysis
 

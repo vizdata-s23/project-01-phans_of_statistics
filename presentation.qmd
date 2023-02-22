@@ -116,18 +116,19 @@ eurovision_filt <- eurovision |>
 #| label: q1 first plot
 #| echo: false
 
-ggplot(eurovision_filt,
-       aes(x = total_points_prop, fill = from_host_country)) +
-  geom_density(alpha = 0.5, linewidth = 1.2) +
-  labs(title = "Distribution of percentage of total points for host competitors",
-       x = "Percentage of total points", y = "Density") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "From Host Country?") +
+ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Distribution of proportion of total available points",
+       subtitle = "Host country vs. 'away' participants",
+       x = "Proportion of total available points",
+       y = "Density") +
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?") +
   theme_minimal()
 ```
 :::
 :::
 
-## Host Country Contestants: A Centennial Turning Point?
+## Home country advantage: A Centennial Turning Point?
 
 ::: columns
 ::: {.column width="100%"}
@@ -136,16 +137,14 @@ ggplot(eurovision_filt,
 #| echo: false
 
 eurovision_filt |>
-  filter(from_host_country == "Yes") |>
-  ggplot(aes(x = rank_pct, y = era_binary)) +
-  geom_density_ridges() +
-  labs(
-    x = "Rank percentile",
-    y = "Era",
-    title = "Distribution of home country participants' rank percentile",
-    subtitle = "By era: pre-2000 vs. post-2000"
-  ) +
-  theme_minimal()
+  ggplot(aes(x = rank_pct, y = era_binary, fill = from_host_country)) +
+  geom_density_ridges(alpha = 0.5) +
+  labs(x = "Rank percentile",
+       y = "Era",
+       title = "Rank percentiles of home country and non-home country participants",
+       subtitle = "By era: pre-2000 vs. post-2000") +
+  theme_minimal() +
+  guides(fill = guide_legend(title = "Host country participant?"))
 ```
 :::
 :::
