@@ -150,16 +150,14 @@ ggplot(eurovision_filt, aes(x = total_points_prop, fill = from_host_country)) +
 ```{r}
 #| label: q1-second-plot
 
-eurovision_filt |>
-  ggplot(aes(x = rank_pct, y = era_binary, fill = from_host_country)) +
+ggplot(eurovision_filt, aes(x = rank_pct, y = era_binary, fill = from_host_country)) +
   geom_density_ridges(alpha = 0.5) +
   labs(x = "Rank percentile",
        y = "Era",
        title = "Rank percentiles of home country and non-home country participants",
        subtitle = "By era: pre-2000 vs. post-2000") +
-  scale_fill_manual(values = c("#f47b6e", "#6baed6"))
-  theme_minimal() +
-  guides(fill = guide_legend(title = "Host country participant?"))
+  scale_fill_manual(values = c("#f47b6e", "#6baed6"), name = "Host country participant?")
+  #guides(fill = guide_legend(title = "Host country participant?"))
 ```
 
 ### Discussion
